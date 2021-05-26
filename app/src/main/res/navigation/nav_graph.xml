@@ -14,7 +14,9 @@
 
         <action
             android:id="@+id/action_movieFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/tvFragment"
@@ -23,17 +25,24 @@
         tools:layout="@layout/fragment_tv">
         <action
             android:id="@+id/action_tvFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.chinlung.trackmovie.fragment.InfoFragment"
-        android:label="fragment_info"
+        android:label="@string/info_titleName"
         tools:layout="@layout/fragment_info" >
-
         <argument
-            android:name="gson"
+            android:name="titleName"
             app:argType="string"/>
+        <argument
+            android:name="position"
+            app:argType="integer" />
+        <argument
+            android:name="movieortv"
+            app:argType="string" />
     </fragment>
 
 </navigation>

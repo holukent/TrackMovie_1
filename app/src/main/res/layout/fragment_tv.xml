@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.TvFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_tv"
+    <data>
+        <variable
+            name="tvfragment"
+            type="com.chinlung.trackmovie.fragment.TvFragment" />
+
+        <variable
+            name="ViewModeles"
+            type="com.chinlung.trackmovie.viewmodel.ViewModels" />
+    </data>
+
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EA6C6C"
-        android:padding="16dp" />
+        tools:context=".fragment.TvFragment">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EA6C6C"
+            android:padding="16dp" />
+
+    </FrameLayout>
+</layout>

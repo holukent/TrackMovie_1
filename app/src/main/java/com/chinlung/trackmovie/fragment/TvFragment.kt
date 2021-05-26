@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentTvBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
 
@@ -25,7 +27,7 @@ class TvFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTvBinding.inflate(inflater,container,false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv, container, false)
         return binding.root
     }
 

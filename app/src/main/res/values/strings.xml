@@ -7,4 +7,11 @@
     <string name="search">SEARCH</string>
     <string name="search_hint">請輸入....</string>
     <string name="app_label">app_label</string>
+    <string name="info_overview_title">劇情大綱</string>
+    <string name="info_titleName">{titleName}</string>
+    <string name="info_overview">%s</string>
+    <string name="info_releaseDate">上映日期: %s</string>
+    <string name="info_popularity">熱度: %s</string>
+    <string name="info_vote_average">平均投票: %s</string>
+    <string name="info_vote_count">投票數量: %s</string>
 </resources>

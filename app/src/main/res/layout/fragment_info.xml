@@ -1,9 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.InfoFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="ViewModeles"
+            type="com.chinlung.trackmovie.viewmodel.ViewModels" />
+
+        <variable
+            name="infoFragment"
+            type="com.chinlung.trackmovie.fragment.InfoFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EA6C6C"
+        tools:context=".fragment.InfoFragment">
+
+        <ImageView
+            android:id="@+id/info_poster"
+            android:layout_width="185dp"
+            android:layout_height="277dp"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:onClick="@{() -> infoFragment.toast()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/info_releaseDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/info_poster"
+            app:layout_constraintTop_toTopOf="@id/info_poster"
+            tools:text="@{@string/info_releaseDate(ViewModeles.releaseDate)}" />
+
+        <TextView
+            android:id="@+id/info_popularity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/info_poster"
+            app:layout_constraintTop_toBottomOf="@id/info_releaseDate"
+            tools:text="@{@string/info_popularity(ViewModeles.popularity)}" />
+
+        <TextView
+            android:id="@+id/info_vote_average"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/info_poster"
+            app:layout_constraintTop_toBottomOf="@id/info_popularity"
+            tools:text="@{@string/info_vote_average(ViewModeles.voteAverage)}" />
+
+        <TextView
+            android:id="@+id/info_vote_Count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/info_poster"
+            app:layout_constraintTop_toBottomOf="@id/info_vote_average"
+            tools:text="@{@string/info_vote_count(ViewModeles.voteCount)}" />
 
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/info_overview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="@string/info_overview_title"
+            android:textSize="40sp"
+            app:layout_constraintTop_toBottomOf="@id/info_poster" />
+
+        <TextView
+            android:id="@+id/info_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:scrollbars="vertical"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/info_overview_title"
+            tools:text="@{ViewModeles.overview}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

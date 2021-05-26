@@ -1,28 +1,39 @@
 package com.chinlung.trackmovie.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class InfoFragment : Fragment() {
 
-    val viewModel: ViewModels by activityViewModels()
-    private var _binding: FragmentInfoBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel: ViewModels by viewModels()
+    private lateinit var binding: FragmentInfoBinding
 
-    lateinit var gson: String
+
+
+    private var position: Int = 0
+    private lateinit var movieortv: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments.let {
-            gson = it?.getString("gson").toString()
+            position = it!!.getInt("position").toInt()
+            movieortv = it.getString("movieortv").toString()
         }
     }
 
@@ -31,17 +42,52 @@ class InfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentInfoBinding.inflate(inflater,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_info, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("gson", gson)
+        binding.infoOverview.movementMethod = ScrollingMovementMethod.getInstance()
+
+        binding.apply {
+            viewModeles =viewModel
+            infoFragment = this@InfoFragment
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+
+        viewModel.requestApi(requireContext(), movieortv)
+
+        viewModel.tvJson.observe(viewLifecycleOwner) {
+            viewModel.setinfo(
+                requireContext(),
+                movieortv,
+                binding.infoPoster,
+                position,
+            )
+        }
+
+        viewModel.movieJson.observe(viewLifecycleOwner) {
+            viewModel.setinfo(
+                requireContext(),
+                movieortv,
+                binding.infoPoster,
+                position,
+
+            )
+        }
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
+            View.GONE
+    }
+    fun toast() {
+        val queryUrl: Uri = Uri.parse("${ViewModels.SEARCH_PREFIX}${viewModel.titleName.value}")
+        requireContext().startActivity(Intent(Intent.ACTION_VIEW, queryUrl))
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
+            View.VISIBLE
     }
 }

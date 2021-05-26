@@ -32,7 +32,9 @@ class TvAdapter(val context: Context, val tvgson: TvJson) :
 
         holder.itemView.setOnClickListener {
             val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-                gson = tvgson.results[position].name
+                titleName = tvgson.results[position].name,
+                position = position,
+                movieortv = "tv"
             )
             holder.itemView.findNavController().navigate(action)
         }

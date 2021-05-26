@@ -15,6 +15,7 @@ import com.chinlung.trackmovie.data.MovieJson
 class MovieAdapter(private val context: Context, private val moviegson: MovieJson) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
+
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val moviePoster: ImageView = itemView.findViewById(R.id.poster)
     }
@@ -31,7 +32,9 @@ class MovieAdapter(private val context: Context, private val moviegson: MovieJso
             .into(holder.moviePoster)
         holder.itemView.setOnClickListener {
             val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-                gson = moviegson.results[position].title
+                position = position,
+                titleName = moviegson.results[position].title,
+                movieortv = "movie"
             )
             holder.itemView.findNavController().navigate(action)
         }
