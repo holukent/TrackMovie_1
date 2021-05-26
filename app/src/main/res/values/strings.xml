@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TrackMovie</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie">MOVIE</string>
+    <string name="tv">TV</string>
+    <string name="search">SEARCH</string>
+    <string name="search_hint">請輸入....</string>
+    <string name="app_label">app_label</string>
+</resources>
