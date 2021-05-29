@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.fragment.MovieFragmentDirections
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.data.MovieJson
+import com.chinlung.trackmovie.model.MovieJson
 
 class MovieAdapter(private val context: Context, private val moviegson: MovieJson) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val moviePoster: ImageView = itemView.findViewById(R.id.poster)
@@ -36,7 +35,7 @@ class MovieAdapter(private val context: Context, private val moviegson: MovieJso
                 titleName = moviegson.results[position].title,
                 movieortv = "movie"
             )
-            holder.itemView.findNavController().navigate(action)
+            it.findNavController().navigate(action)
         }
     }
 

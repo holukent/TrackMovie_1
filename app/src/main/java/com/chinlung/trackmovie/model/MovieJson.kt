@@ -1,4 +1,4 @@
-package com.chinlung.trackmovie.data
+package com.chinlung.trackmovie.model
 
 data class MovieJson(
     val page: Int,

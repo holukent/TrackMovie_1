@@ -1,6 +1,6 @@
-package com.chinlung.trackmovie.data
+package com.chinlung.trackmovie.model
 
-data class ResultX(
+data class TvResult(
     val backdrop_path: String,
     val first_air_date: String,
     val genre_ids: List<Int>,

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
@@ -19,9 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class InfoFragment : Fragment() {
 
-    private val viewModel: ViewModels by viewModels()
+    private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentInfoBinding
-
 
 
     private var position: Int = 0
@@ -32,7 +32,7 @@ class InfoFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments.let {
-            position = it!!.getInt("position").toInt()
+            position = it!!.getInt("position")
             movieortv = it.getString("movieortv").toString()
         }
     }
@@ -41,8 +41,9 @@ class InfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_info, container, false)
+    ): View {
+        binding = FragmentInfoBinding.inflate(inflater, container, false)
+//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_info, container, false)
         return binding.root
     }
 
@@ -51,13 +52,13 @@ class InfoFragment : Fragment() {
         binding.infoOverview.movementMethod = ScrollingMovementMethod.getInstance()
 
         binding.apply {
-            viewModeles =viewModel
+            viewModeles = viewModel
             infoFragment = this@InfoFragment
             lifecycleOwner = viewLifecycleOwner
         }
 
 
-        viewModel.requestApi(requireContext(), movieortv)
+        viewModel.requestapi(requireContext(),tmdbValue = null ,moviewortv = movieortv)
 
         viewModel.tvJson.observe(viewLifecycleOwner) {
             viewModel.setinfo(
@@ -75,13 +76,14 @@ class InfoFragment : Fragment() {
                 binding.infoPoster,
                 position,
 
-            )
+                )
         }
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.GONE
     }
-    fun toast() {
-        val queryUrl: Uri = Uri.parse("${ViewModels.SEARCH_PREFIX}${viewModel.titleName.value}")
+
+    fun searchToast() {
+        val queryUrl: Uri = Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.titleName.value}")
         requireContext().startActivity(Intent(Intent.ACTION_VIEW, queryUrl))
     }
 

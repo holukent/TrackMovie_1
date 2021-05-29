@@ -9,10 +9,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.data.TvJson
+import com.chinlung.trackmovie.model.TvJson
 import com.chinlung.trackmovie.fragment.MovieFragmentDirections
 
-class TvAdapter(val context: Context, val tvgson: TvJson) :
+class TvAdapter(val context: Context, private val tvgson: TvJson) :
     RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
 
     class TvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

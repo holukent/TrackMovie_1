@@ -14,10 +14,11 @@ import com.chinlung.trackmovie.viewmodel.ViewModels
 class MainActivity : AppCompatActivity() {
     private lateinit var navcontroller: NavController
     private val viewModel: ViewModels by viewModels()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding =
+        binding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         //app:deaultNavHost = "true"
@@ -26,13 +27,32 @@ class MainActivity : AppCompatActivity() {
         navcontroller = navHostFragment.navController
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            viewModel.changtmdbValue(it.itemId)
+
+            when (it.itemId) {
+                R.id.navBottonBar_Movie -> {
+                    viewModel.navigationBottomBar(it.itemId,this)
+                }
+                R.id.navBottonBar_Tv -> {
+                    viewModel.navigationBottomBar(it.itemId,this)
+                }
+                R.id.navBottonBar_Search -> {
+                    viewModel.navigationBottomBar(it.itemId,this)
+//                    navcontroller.navigate(R.id.searchFragment)
+                }
+            }
             true
         }
-        binding.bottomNavigation.setOnNavigationItemReselectedListener {}
+        binding.bottomNavigation.setOnNavigationItemReselectedListener {
 
+        }
 
-//        binding.bottomNavigation.setOnNavigationItemSelectedListener(listenerBottom)
+//        binding.editSearch.setOnEditorActionListener { v, actionId, event ->
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                viewModel.editInput(v.text)
+//            }
+//            false
+//        }
+
         //appbarbackupkey
         setupActionBarWithNavController(navcontroller)
     }
@@ -40,4 +60,17 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp() || navcontroller.navigateUp()
     }
+
+
+//    fun openDb(): TmdbDataBase {
+//        val db=  Room.databaseBuilder(
+//            applicationContext,
+//            TmdbDataBase::class.java,
+//            "database-Tmdb"
+//        ).build()
+//
+//        val movieDao = db.movieDao()
+//        movieDao.insertAll()
+//        return db
+//    }
 }

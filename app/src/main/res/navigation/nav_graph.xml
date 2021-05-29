@@ -17,18 +17,21 @@
             app:destination="@id/infoFragment"
             app:enterAnim="@anim/slide_in_left"
             app:popEnterAnim="@anim/slide_in_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/tvFragment"
-        android:name="com.chinlung.trackmovie.fragment.TvFragment"
-        android:label="fragment_tv"
-        tools:layout="@layout/fragment_tv">
         <action
-            android:id="@+id/action_tvFragment_to_infoFragment"
-            app:destination="@id/infoFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:popEnterAnim="@anim/slide_in_right" />
+            android:id="@+id/action_movieFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/tvFragment"-->
+<!--        android:name="com.chinlung.trackmovie.fragment.TvFragment"-->
+<!--        android:label="fragment_tv"-->
+<!--        tools:layout="@layout/fragment_tv">-->
+<!--        <action-->
+<!--            android:id="@+id/action_tvFragment_to_infoFragment"-->
+<!--            app:destination="@id/infoFragment"-->
+<!--            app:enterAnim="@anim/slide_in_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_right" />-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.chinlung.trackmovie.fragment.InfoFragment"
@@ -43,6 +46,11 @@
         <argument
             android:name="movieortv"
             app:argType="string" />
+
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.chinlung.trackmovie.fragment.SearchFragment"
+        android:label="SearchFragment" />
 
 </navigation>

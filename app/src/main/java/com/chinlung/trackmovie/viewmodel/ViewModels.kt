@@ -1,27 +1,23 @@
 package com.chinlung.trackmovie.viewmodel
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.chinlung.trackmovie.BuildConfig
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.adapter.MovieAdapter
-import com.chinlung.trackmovie.adapter.TvAdapter
-import com.chinlung.trackmovie.data.MovieJson
-import com.chinlung.trackmovie.data.TvJson
+import com.chinlung.trackmovie.model.MovieJson
+import com.chinlung.trackmovie.model.SearchKeyWordJson
+import com.chinlung.trackmovie.model.TvJson
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,10 +27,13 @@ class ViewModels : ViewModel() {
 
     companion object {
         const val TMDB_TV_HOT =
-            "https://api.themoviedb.org/3/discover/tv?api_key=3295120c2c04434d28ac1d5ff19a3af0&sort_by=popularity.desc"
+            "https://api.themoviedb.org/3/discover/tv?api_key=${BuildConfig.TMDB_KEY}&sort_by=popularity.desc"
         const val TMDB_MOVIE_HOT =
-            "https://api.themoviedb.org/3/discover/movie?api_key=3295120c2c04434d28ac1d5ff19a3af0&sort_by=popularity.desc"
-        const val SEARCH_PREFIX = "https://www.google.com/search?q="
+            "https://api.themoviedb.org/3/discover/movie?api_key=${BuildConfig.TMDB_KEY}&sort_by=popularity.desc"
+        const val CHROME_SEARCH_PREFIX = "https://www.google.com/search?q="
+
+        const val SEARCH_TMDB =
+            "https://api.themoviedb.org/3/search/movie?api_key=${BuildConfig.TMDB_KEY}&language=en-US&page=1&include_adult=false&query="
     }
 
     private var _tmdbValue: MutableLiveData<String> = MutableLiveData()
@@ -52,6 +51,12 @@ class ViewModels : ViewModel() {
     private var _tvJson: MutableLiveData<TvJson> = MutableLiveData()
     val tvJson: LiveData<TvJson> get() = _tvJson
 
+    private var _searchKeyWordJson: MutableLiveData<SearchKeyWordJson> = MutableLiveData()
+    val searchKeyWordJson: LiveData<SearchKeyWordJson> get() = _searchKeyWordJson
+
+    var _gson: MutableLiveData<Any> = MutableLiveData()
+    val gson: LiveData<Any> get() = _gson
+
     private var _titleName: MutableLiveData<String> = MutableLiveData()
     val titleName: LiveData<String> get() = _titleName
 
@@ -62,7 +67,7 @@ class ViewModels : ViewModel() {
     val releaseDate: LiveData<String> get() = _releaseDate
 
     private var _imagePath: MutableLiveData<String> = MutableLiveData()
-    val imagePath: LiveData<String> get() = _imagePath
+    private val imagePath: LiveData<String> get() = _imagePath
 
     private var _popularity: MutableLiveData<String> = MutableLiveData()
     val popularity: LiveData<String> get() = _popularity
@@ -71,63 +76,22 @@ class ViewModels : ViewModel() {
     val voteAverage: LiveData<String> get() = _voteAverage
 
     private var _voteCount: MutableLiveData<String> = MutableLiveData()
-    val voteCount : LiveData<String> get() = _voteCount
+    val voteCount: LiveData<String> get() = _voteCount
+
+    private var _editInput: MutableLiveData<String> = MutableLiveData()
+    val editInput: LiveData<String> get() = _editInput
+
+    private var _navitemid: MutableLiveData<Int> = MutableLiveData()
+    val navitemid: LiveData<Int> get() = _navitemid
 
 
     init {
         _tmdbValue.value = TMDB_MOVIE_HOT
     }
 
-    fun requestTMDB(context: Context, recyclerView: RecyclerView, json: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val queue = Volley.newRequestQueue(context)
-            val stringrequest = StringRequest(
-                Request.Method.GET,
-                json,
-                {
-                    when (json) {
-                        TMDB_MOVIE_HOT -> {
-                            _movieJson.value = Gson().fromJson(it, MovieJson::class.java)
-                            recyclerView.adapter = MovieAdapter(context, movieJson.value!!)
-                            recyclerView.layoutManager =
-                                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            recyclerView.setHasFixedSize(true)
-                        }
-                        TMDB_TV_HOT -> {
-                            _tvJson.value = Gson().fromJson(it, TvJson::class.java)
-                            recyclerView.adapter = TvAdapter(context, tvJson.value!!)
-                            recyclerView.layoutManager =
-                                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                            recyclerView.setHasFixedSize(true)
-                        }
-                    }
-                },
-                { Toast.makeText(context, "wrong", Toast.LENGTH_SHORT).show() })
 
-            queue.add(stringrequest)
-        }
-    }
-
-    fun requestApi(context: Context, movieortv: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val queue = Volley.newRequestQueue(context)
-            val stringrequest = StringRequest(
-                Request.Method.GET,
-                if (movieortv == "movie") TMDB_MOVIE_HOT else TMDB_TV_HOT,
-                {
-                    if (movieortv == "movie") {
-                        _movieJson.value = Gson().fromJson(it, MovieJson::class.java)
-                    } else {
-                        _tvJson.value = Gson().fromJson(it, TvJson::class.java)
-                    }
-                },
-                {}
-            )
-            queue.add(stringrequest)
-        }
-    }
-
-    fun changtmdbValue(itemid: Int) {
+    fun navigationBottomBar(itemid: Int, requireContext: Context) {
+        _navitemid.value = itemid
         when (itemid) {
             R.id.navBottonBar_Movie -> {
                 _tmdbValue.value = TMDB_MOVIE_HOT
@@ -136,7 +100,6 @@ class ViewModels : ViewModel() {
                 _tmdbValue.value = TMDB_TV_HOT
             }
             R.id.navBottonBar_Search -> {
-                _toast.value = "尚未開發"
             }
         }
     }
@@ -175,13 +138,45 @@ class ViewModels : ViewModel() {
     }
 
 
-//    private fun RecyclerView.setRecyclerAdapter(context: Context, gson: MovieJson) {
-//        this.adapter = MovieAdapter(context, gson)
-//        this.layoutManager =
-//            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        //                this.layoutManager = GridLayoutManager(context, 2)
-//        this.setHasFixedSize(true)
-//    }
-//
+    fun requestapi(
+        requireContext: Context,
+        tmdbValue: String? = null,
+        moviewortv: String? = null
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val queue = Volley.newRequestQueue(requireContext)
+            val stringrequest = StringRequest(
+                Request.Method.GET,
+                if (tmdbValue == TMDB_MOVIE_HOT || moviewortv == "movie") TMDB_MOVIE_HOT
+                else if (tmdbValue == TMDB_TV_HOT || moviewortv == "tv") TMDB_TV_HOT
+                else SEARCH_TMDB,
+                {
+                    if (tmdbValue == TMDB_MOVIE_HOT || moviewortv == "movie") {
+                        _movieJson.value = Gson().fromJson(it, MovieJson::class.java)
+                    } else {
+                        _tvJson.value = Gson().fromJson(it, TvJson::class.java)
+                    }
+                },
+                {}
+            )
+            queue.add(stringrequest)
+        }
+    }
 
+    fun editInput(text: CharSequence) {
+        _editInput.value = text.toString()
+    }
+
+    fun requestsearch(requireContext: Context,editText: String) {
+        val queue = Volley.newRequestQueue(requireContext)
+        val stringrequest = StringRequest(
+            Request.Method.GET,
+            "${SEARCH_TMDB}$editText",
+            {
+                _searchKeyWordJson.value = Gson().fromJson(it,SearchKeyWordJson::class.java)
+            },
+            {}
+        )
+        queue.add(stringrequest)
+    }
 }
