@@ -1,54 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="viewModels"
+            type="com.chinlung.trackmovie.viewmodel.ViewModels" />
+
+        <variable
+            name="searchkeywordjson"
+            type="com.chinlung.trackmovie.model.SearchKeyWordJson" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DC3636">
+        android:layout_margin="8dp">
 
-        <ImageView
-            android:id="@+id/search_poster"
-            android:layout_width="92dp"
-            android:layout_height="138dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:src="@drawable/w92" />
-
-        <TextView
-            android:id="@+id/search_titleName"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/search_poster"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            tools:text="1231231231123123123123231,,,,,2"
-            android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:background="#DC3636">
 
-        <TextView
-            android:id="@+id/search_releaseDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/search_poster"
-            app:layout_constraintTop_toBottomOf="@id/search_titleName"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            tools:text="123123123"
-            />
+            <ImageView
+                android:id="@+id/search_poster"
+                android:layout_width="92dp"
+                android:layout_height="138dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/w92" />
+
+            <TextView
+                android:id="@+id/search_titleName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/search_poster"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="123123123" />
+
+            <TextView
+                android:id="@+id/search_releaseDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/search_poster"
+                app:layout_constraintTop_toBottomOf="@id/search_titleName"
+                tools:text="123123123" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <CheckBox
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:button="@drawable/sl_favourite_24dp"
+                app:buttonTint="@android:color/white"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toEndOf="@id/search_poster"
+                app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />
+
+            <!--        <com.google.android.material.button.MaterialButton-->
+            <!--            android:id="@+id/search_addWatchList"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:text="WATCHLIST"-->
+            <!--            android:shadowColor="@color/white"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:icon="@drawable/ic_baseline_add_24"-->
+            <!--            style="@style/Widget.MaterialComponents.Button.Icon"-->
+            <!--            app:layout_constraintTop_toBottomOf="@id/search_releaseDate"-->
+            <!--            />-->
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -5,25 +5,28 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.fragment.MovieFragmentDirections
-import com.chinlung.trackmovie.model.MovieJson
-import com.chinlung.trackmovie.model.SearchKeyWordJson
+import com.chinlung.trackmovie.model.Result
+import com.chinlung.trackmovie.model.SearchResult
+import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class SearchAdapter(
     val context: Context,
-    private val moviegson: SearchKeyWordJson,
-
-    ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-
+    private val searchgson: List<Result>,
+    val viewModels: ViewModels
+) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
     class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val moviePoster: ImageView = itemView.findViewById(R.id.search_poster)
+        val searchimg: ImageView = itemView.findViewById(R.id.search_poster)
+        val searchTitle: TextView = itemView.findViewById(R.id.search_titleName)
+        val searchrelease: TextView = itemView.findViewById(R.id.search_releaseDate)
+
+        val icon: CheckBox = itemView.findViewById(R.id.icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -33,20 +36,26 @@ class SearchAdapter(
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+
+        holder.icon.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Log.d("icon", "$isChecked")
+
+            } else {
+                Log.d("icon", "$isChecked")
+            }
+        }
         Glide.with(context)
-            .load("https://image.tmdb.org/t/p/w92${moviegson.results[position].poster_path}")
-            .into(holder.moviePoster)
-//        holder.itemView.setOnClickListener {
-//            val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-//                position = position,
-//                titleName = moviegson.results[position].title,
-//                movieortv = "movie"
-//            )
-//            it.findNavController().navigate(action)
-//        }
+            .load("https://image.tmdb.org/t/p/w92${searchgson[position].poster_path}")
+            .into(holder.searchimg)
+
+        holder.searchTitle.text = searchgson[position].title
+        holder.searchrelease.text = "發佈日期: ${searchgson[position].release_date}"
+        holder.itemView.setOnClickListener {
+        }
     }
 
     override fun getItemCount(): Int {
-        return moviegson.results.size
+        return searchgson.size
     }
 }

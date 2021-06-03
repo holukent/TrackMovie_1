@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="ViewModeles"
+            name="viewModeles"
             type="com.chinlung.trackmovie.viewmodel.ViewModels" />
 
         <variable
@@ -42,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toTopOf="@id/info_poster"
-            tools:text="@{@string/info_releaseDate(ViewModeles.releaseDate)}" />
+            tools:text="@{@string/info_releaseDate(viewModeles.releaseDate)}" />
 
         <TextView
             android:id="@+id/info_popularity"
@@ -57,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_releaseDate"
-            tools:text="@{@string/info_popularity(ViewModeles.popularity)}" />
+            tools:text="@{@string/info_popularity(viewModeles.popularity)}" />
         <TextView
             android:id="@+id/info_vote_average"
             android:layout_width="0dp"
@@ -70,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_popularity"
-            tools:text="@{@string/info_vote_average(ViewModeles.voteAverage)}" />
+            tools:text="@{@string/info_vote_average(viewModeles.voteAverage)}" />
 
         <TextView
             android:id="@+id/info_vote_Count"
@@ -84,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_vote_average"
-            tools:text="@{@string/info_vote_count(ViewModeles.voteCount)}" />
+            tools:text="@{@string/info_vote_count(viewModeles.voteCount)}" />
 
 
         <TextView
@@ -106,7 +106,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/info_overview_title"
-            tools:text="@{ViewModeles.overview}" />
+            tools:text="@{viewModeles.overview}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

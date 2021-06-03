@@ -10,9 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.fragment.MovieFragmentDirections
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.model.MovieJson
 
-class MovieAdapter(private val context: Context, private val moviegson: MovieJson) :
+import com.chinlung.trackmovie.model.TotalJson
+import com.chinlung.trackmovie.viewmodel.ViewModels
+
+class MovieAdapter(
+    private val context: Context,
+    private val totaljson: TotalJson,
+    val viewModel: ViewModels
+) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,19 +33,18 @@ class MovieAdapter(private val context: Context, private val moviegson: MovieJso
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         Glide.with(context)
-            .load("https://image.tmdb.org/t/p/w500${moviegson.results[position].poster_path}")
+            .load("https://image.tmdb.org/t/p/w500${totaljson.results[position].poster_path}")
             .into(holder.moviePoster)
         holder.itemView.setOnClickListener {
             val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
                 position = position,
-                titleName = moviegson.results[position].title,
-                movieortv = "movie"
+                totalJson = totaljson
             )
             it.findNavController().navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
-        return moviegson.results.size
+        return totaljson.results.size
     }
 }

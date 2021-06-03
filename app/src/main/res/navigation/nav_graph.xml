@@ -17,40 +17,49 @@
             app:destination="@id/infoFragment"
             app:enterAnim="@anim/slide_in_left"
             app:popEnterAnim="@anim/slide_in_right" />
-        <action
-            android:id="@+id/action_movieFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+
     </fragment>
-<!--    <fragment-->
-<!--        android:id="@+id/tvFragment"-->
-<!--        android:name="com.chinlung.trackmovie.fragment.TvFragment"-->
-<!--        android:label="fragment_tv"-->
-<!--        tools:layout="@layout/fragment_tv">-->
-<!--        <action-->
-<!--            android:id="@+id/action_tvFragment_to_infoFragment"-->
-<!--            app:destination="@id/infoFragment"-->
-<!--            app:enterAnim="@anim/slide_in_left"-->
-<!--            app:popEnterAnim="@anim/slide_in_right" />-->
-<!--    </fragment>-->
+
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.chinlung.trackmovie.fragment.InfoFragment"
         android:label="@string/info_titleName"
         tools:layout="@layout/fragment_info" >
         <argument
-            android:name="titleName"
-            app:argType="string"/>
-        <argument
             android:name="position"
             app:argType="integer" />
+
         <argument
-            android:name="movieortv"
-            app:argType="string" />
+            android:name="tvjson"
+            app:argType="com.chinlung.trackmovie.model.TvJson"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="totalJson"
+            app:argType="com.chinlung.trackmovie.model.TotalJson"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
     </fragment>
     <fragment
+        android:id="@+id/watchList"
+        android:name="com.chinlung.trackmovie.fragment.WatchList"
+        android:label="fragment_watch_list"
+        tools:layout="@layout/fragment_watch_list" />
+    <fragment
         android:id="@+id/searchFragment"
         android:name="com.chinlung.trackmovie.fragment.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/tvFragment"
+        android:name="com.chinlung.trackmovie.fragment.TvFragment"
+        android:label="fragment_tv"
+        tools:layout="@layout/fragment_tv" >
+        <action
+            android:id="@+id/action_tvFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+
 
 </navigation>

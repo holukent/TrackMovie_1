@@ -15,4 +15,6 @@
     <string name="info_vote_average">平均評分: %s</string>
     <string name="info_vote_count">投票數量: %s</string>
     <string name="edit_input_search"></string>
+    <string name="watchkist">WATCHLIST</string>
+    <string name="add_watchlist">ADD WATCHLIST</string>
 </resources>

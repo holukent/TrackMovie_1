@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
+
+import com.chinlung.trackmovie.model.TotalJson
+import com.chinlung.trackmovie.model.TvJson
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -25,7 +25,9 @@ class InfoFragment : Fragment() {
 
 
     private var position: Int = 0
-    private lateinit var movieortv: String
+
+    private var tvjson: TvJson? = null
+    private var json: TotalJson? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,9 @@ class InfoFragment : Fragment() {
 
         arguments.let {
             position = it!!.getInt("position")
-            movieortv = it.getString("movieortv").toString()
+
+            tvjson = it.getParcelable("tvjson")
+            json = it.getParcelable("totalJson")
         }
     }
 
@@ -58,32 +62,20 @@ class InfoFragment : Fragment() {
         }
 
 
-        viewModel.requestapi(requireContext(),tmdbValue = null ,moviewortv = movieortv)
+        viewModel.setinfo(requireContext(),binding.infoPoster,position,json)
+//        if (moviejson != null) {
+//            viewModel.setinfo(requireContext(),binding.infoPoster,position,moviejson)
+//        }else {
+//            viewModel.setinfo(requireContext(),binding.infoPoster,position,tvjson)
+//        }
 
-        viewModel.tvJson.observe(viewLifecycleOwner) {
-            viewModel.setinfo(
-                requireContext(),
-                movieortv,
-                binding.infoPoster,
-                position,
-            )
-        }
-
-        viewModel.movieJson.observe(viewLifecycleOwner) {
-            viewModel.setinfo(
-                requireContext(),
-                movieortv,
-                binding.infoPoster,
-                position,
-
-                )
-        }
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.GONE
     }
 
     fun searchToast() {
-        val queryUrl: Uri = Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.titleName.value}")
+        val queryUrl: Uri =
+            Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.titleName.value}")
         requireContext().startActivity(Intent(Intent.ACTION_VIEW, queryUrl))
     }
 

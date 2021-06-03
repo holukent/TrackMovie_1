@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.model.TvJson
-import com.chinlung.trackmovie.fragment.MovieFragmentDirections
+import com.chinlung.trackmovie.fragment.TvFragmentDirections
 
 class TvAdapter(val context: Context, private val tvgson: TvJson) :
     RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
@@ -31,10 +31,9 @@ class TvAdapter(val context: Context, private val tvgson: TvJson) :
             .into(holder.tvPoster)
 
         holder.itemView.setOnClickListener {
-            val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-                titleName = tvgson.results[position].name,
+            val action = TvFragmentDirections.actionTvFragmentToInfoFragment(
                 position = position,
-                movieortv = "tv"
+                tvjson = tvgson
             )
             holder.itemView.findNavController().navigate(action)
         }

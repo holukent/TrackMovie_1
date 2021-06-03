@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,18 +10,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.MovieFragment">
-
+        tools:context=".fragment.TvFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_movie"
+            android:id="@+id/recycler_Tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="16dp"
             android:background="@color/background_default"
-            android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:padding="16dp" />
-
-
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </FrameLayout>
 </layout>

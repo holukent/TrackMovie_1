@@ -1,8 +1,6 @@
 package com.chinlung.trackmovie.fragment
 
-
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,21 +8,21 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chinlung.trackmovie.adapter.MovieAdapter
+import com.chinlung.trackmovie.MainActivity
+import com.chinlung.trackmovie.R
+import com.chinlung.trackmovie.adapter.TvAdapter
 import com.chinlung.trackmovie.databinding.FragmentMovieBinding
+import com.chinlung.trackmovie.databinding.FragmentTvBinding
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 
-
-class MovieFragment : Fragment() {
-
-
+class TvFragment : Fragment() {
     private val viewModel: ViewModels by activityViewModels()
-    private lateinit var binding: FragmentMovieBinding
+    lateinit var binding: FragmentTvBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             activity?.finish()
         }
@@ -33,39 +31,20 @@ class MovieFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie,container,false)
-        binding = FragmentMovieBinding.inflate(inflater, container, false)
+    ): View? {
+        binding = FragmentTvBinding.inflate(inflater,container,false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
-        Log.d("movie","here")
+        viewModel.requestTmdbApi(TmdbApi.TMDB_TV_HOT)
 
-        viewModel.json.observe(viewLifecycleOwner) {
-            binding.recyclerMovie.adapter =  MovieAdapter(requireContext(), it,viewModel)
-            binding.recyclerMovie.layoutManager =
+        viewModel.tvJson.observe(viewLifecycleOwner) {
+            binding.recyclerTv.adapter = TvAdapter(requireContext(),it)
+            binding.recyclerTv.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerMovie.setHasFixedSize(true)
+            binding.recyclerTv.setHasFixedSize(true)
         }
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("recyclerlife", "onpause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("recyclerlife", "onstop")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("recyclerlife", "ondestroy")
     }
 }

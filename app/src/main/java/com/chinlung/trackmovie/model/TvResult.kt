@@ -1,11 +1,13 @@
 package com.chinlung.trackmovie.model
 
+import com.google.gson.annotations.SerializedName
+
 data class TvResult(
     val backdrop_path: String,
-    val first_air_date: String,
+    @SerializedName("first_air_date") val release_date: String,
     val genre_ids: List<Int>,
     val id: Int,
-    val name: String,
+    @SerializedName("name") val title: String,
     val origin_country: List<String>,
     val original_language: String,
     val original_name: String,

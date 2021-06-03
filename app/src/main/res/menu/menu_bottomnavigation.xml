@@ -15,4 +15,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/search" />
+    <item
+        android:id="@+id/navBottonBar_WatchList"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        android:title="@string/watchkist" />
 </menu>
