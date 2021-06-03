@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
-
-import com.chinlung.trackmovie.model.TotalJson
-import com.chinlung.trackmovie.model.TvJson
+import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -23,11 +20,7 @@ class InfoFragment : Fragment() {
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentInfoBinding
 
-
     private var position: Int = 0
-
-    private var tvjson: TvJson? = null
-    private var json: TotalJson? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +28,7 @@ class InfoFragment : Fragment() {
 
         arguments.let {
             position = it!!.getInt("position")
-
-            tvjson = it.getParcelable("tvjson")
-            json = it.getParcelable("totalJson")
+//            json = it.getParcelable("totalJson")!!
         }
     }
 
@@ -61,21 +52,20 @@ class InfoFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
+        viewModel.setUrl()
 
-        viewModel.setinfo(requireContext(),binding.infoPoster,position,json)
-//        if (moviejson != null) {
-//            viewModel.setinfo(requireContext(),binding.infoPoster,position,moviejson)
-//        }else {
-//            viewModel.setinfo(requireContext(),binding.infoPoster,position,tvjson)
-//        }
+
+//        viewModel.setImage( binding.infoPoster,
+//        "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}")
 
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.GONE
     }
 
-    fun searchToast() {
+    fun googleInfo() {
         val queryUrl: Uri =
-            Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.titleName.value}")
+            Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.json.value!!
+                .results[viewModel.position.value!!].title}")
         requireContext().startActivity(Intent(Intent.ACTION_VIEW, queryUrl))
     }
 

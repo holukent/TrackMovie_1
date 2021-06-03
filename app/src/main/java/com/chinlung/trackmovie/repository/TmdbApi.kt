@@ -15,8 +15,8 @@ class TmdbApi {
         const val TMDB_SEARCH_MOVIE =
             "https://api.themoviedb.org/3/search/movie?api_key=${BuildConfig.TMDB_KEY}&language=en-US&page=1&include_adult=false&query="
         const val TMDB_GETMOVIE_BY_ID ="https://api.themoviedb.org/3/movie/"
-
         const val TMDB_SEARCH = "https://api.themoviedb.org/3/search/"
+        const val TMDB_IMAGE = "https://image.tmdb.org/t/p/w500"
     }
     fun loadTmdbSearch(movieortv: String): String {
 

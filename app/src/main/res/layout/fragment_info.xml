@@ -12,6 +12,10 @@
         <variable
             name="infoFragment"
             type="com.chinlung.trackmovie.fragment.InfoFragment" />
+
+        <variable
+            name="tmdbapi"
+            type="com.chinlung.trackmovie.repository.TmdbApi" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +30,8 @@
             android:layout_height="277dp"
             android:layout_margin="10dp"
             android:layout_marginEnd="10dp"
-            android:onClick="@{() -> infoFragment.searchToast()}"
+            app:imageUrl="@{viewModeles.url}"
+            android:onClick="@{() -> infoFragment.googleInfo()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toTopOf="@id/info_poster"
-            tools:text="@{@string/info_releaseDate(viewModeles.releaseDate)}" />
+            tools:text="@{@string/info_releaseDate(viewModeles.json.results[viewModeles.position].release_date)}" />
 
         <TextView
             android:id="@+id/info_popularity"
@@ -57,7 +62,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_releaseDate"
-            tools:text="@{@string/info_popularity(viewModeles.popularity)}" />
+            tools:text="@{@string/info_popularity(viewModeles.json.results[viewModeles.position].popularity)}" />
+
         <TextView
             android:id="@+id/info_vote_average"
             android:layout_width="0dp"
@@ -70,7 +76,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_popularity"
-            tools:text="@{@string/info_vote_average(viewModeles.voteAverage)}" />
+            tools:text="@{@string/info_vote_average(viewModeles.json.results[viewModeles.position].vote_average)}" />
 
         <TextView
             android:id="@+id/info_vote_Count"
@@ -79,12 +85,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
-            android:textSize="20sp"
             android:textColor="@color/black"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_vote_average"
-            tools:text="@{@string/info_vote_count(viewModeles.voteCount)}" />
+            tools:text="@{@string/info_vote_count(viewModeles.json.results[viewModeles.position].vote_count)}" />
 
 
         <TextView
@@ -93,8 +99,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:text="@string/info_overview_title"
-            android:textSize="40sp"
             android:textColor="@color/black"
+            android:textSize="40sp"
             app:layout_constraintTop_toBottomOf="@id/info_poster" />
 
         <TextView
@@ -106,7 +112,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/info_overview_title"
-            tools:text="@{viewModeles.overview}" />
+            tools:text="@{viewModeles.json.results[viewModeles.position].overview}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

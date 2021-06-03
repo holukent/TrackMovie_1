@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chinlung.trackmovie.MainActivity
-import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.adapter.TvAdapter
-import com.chinlung.trackmovie.databinding.FragmentMovieBinding
 import com.chinlung.trackmovie.databinding.FragmentTvBinding
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
@@ -32,7 +29,7 @@ class TvFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTvBinding.inflate(inflater,container,false)
+        binding = FragmentTvBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,8 +37,8 @@ class TvFragment : Fragment() {
 
         viewModel.requestTmdbApi(TmdbApi.TMDB_TV_HOT)
 
-        viewModel.tvJson.observe(viewLifecycleOwner) {
-            binding.recyclerTv.adapter = TvAdapter(requireContext(),it)
+        viewModel.json.observe(viewLifecycleOwner) {
+            binding.recyclerTv.adapter = TvAdapter(viewModel)
             binding.recyclerTv.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerTv.setHasFixedSize(true)

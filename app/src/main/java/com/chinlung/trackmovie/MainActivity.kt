@@ -1,7 +1,6 @@
 package com.chinlung.trackmovie
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     navcontroller.navigate(R.id.tvFragment)
                 }
             }
+            viewModel.getNavBarItem(it.itemId)
             true
         }
         binding.bottomNavigation.setOnNavigationItemReselectedListener {}

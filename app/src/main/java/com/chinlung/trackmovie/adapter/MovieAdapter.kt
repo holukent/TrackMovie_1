@@ -1,22 +1,17 @@
 package com.chinlung.trackmovie.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.fragment.MovieFragmentDirections
 import com.chinlung.trackmovie.R
-
-import com.chinlung.trackmovie.model.TotalJson
+import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class MovieAdapter(
-    private val context: Context,
-    private val totaljson: TotalJson,
     val viewModel: ViewModels
 ) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
@@ -27,24 +22,26 @@ class MovieAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val adapterLayoutView =
-            LayoutInflater.from(context).inflate(R.layout.list_poster, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.list_poster, parent, false)
         return MovieViewHolder(adapterLayoutView)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        Glide.with(context)
-            .load("https://image.tmdb.org/t/p/w500${totaljson.results[position].poster_path}")
-            .into(holder.moviePoster)
+
+        viewModel.setImage(holder.moviePoster,
+            "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}")
+
         holder.itemView.setOnClickListener {
+            viewModel.getPosition(position)
             val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
                 position = position,
-                totalJson = totaljson
+//                totalJson = totalJson
             )
             it.findNavController().navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
-        return totaljson.results.size
+        return viewModel.json.value!!.results.size
     }
 }

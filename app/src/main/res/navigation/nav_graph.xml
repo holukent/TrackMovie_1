@@ -29,16 +29,11 @@
             android:name="position"
             app:argType="integer" />
 
-        <argument
-            android:name="tvjson"
-            app:argType="com.chinlung.trackmovie.model.TvJson"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="totalJson"
-            app:argType="com.chinlung.trackmovie.model.TotalJson"
-            app:nullable="true"
-            android:defaultValue="@null" />
+<!--        <argument-->
+<!--            android:name="totalJson"-->
+<!--            app:argType="com.chinlung.trackmovie.model.TotalJson"-->
+<!--            app:nullable="true"-->
+<!--            android:defaultValue="@null" />-->
 
     </fragment>
     <fragment

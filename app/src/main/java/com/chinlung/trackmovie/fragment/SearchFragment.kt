@@ -40,12 +40,13 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         viewModel.editInput.observe(viewLifecycleOwner) {
-            if(it != "") viewModel.requestTmdbApi(api = viewModel.editSearchApi(it))
+            viewModel.editSearchApi(it)
+            if(it != "") viewModel.requestTmdbApi()
         }
 
         viewModel.json.observe(viewLifecycleOwner) {
             if (viewModel.editInput.value != "" && viewModel.editInput.value != null) {
-                binding.recyclerSearch.adapter = SearchAdapter(requireContext(), it.results, viewModel)
+                binding.recyclerSearch.adapter = SearchAdapter(viewModel)
                 binding.recyclerSearch.setHasFixedSize(true)
             }
 
@@ -72,6 +73,10 @@ class SearchFragment : Fragment() {
 
 
         binding.btn.setOnClickListener {
+
+        }
+
+        viewModel.tabLayoutItem.observe(viewLifecycleOwner) {
 
         }
 

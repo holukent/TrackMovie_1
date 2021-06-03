@@ -1,18 +1,17 @@
 package com.chinlung.trackmovie.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.R
-import com.chinlung.trackmovie.model.TvJson
 import com.chinlung.trackmovie.fragment.TvFragmentDirections
+import com.chinlung.trackmovie.repository.TmdbApi
+import com.chinlung.trackmovie.viewmodel.ViewModels
 
-class TvAdapter(val context: Context, private val tvgson: TvJson) :
+class TvAdapter( val viewModel: ViewModels) :
     RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
 
     class TvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,25 +20,27 @@ class TvAdapter(val context: Context, private val tvgson: TvJson) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
         val adapterLayoutView =
-            LayoutInflater.from(context).inflate(R.layout.list_poster, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.list_poster, parent, false)
         return TvViewHolder(adapterLayoutView)
     }
 
     override fun onBindViewHolder(holder: TvViewHolder, position: Int) {
-        Glide.with(context)
-            .load("https://image.tmdb.org/t/p/w500${tvgson.results[position].poster_path}")
-            .into(holder.tvPoster)
+        viewModel.setImage(
+             holder.tvPoster,
+            "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}"
+        )
 
         holder.itemView.setOnClickListener {
+            viewModel.getPosition(position)
             val action = TvFragmentDirections.actionTvFragmentToInfoFragment(
                 position = position,
-                tvjson = tvgson
+//                totalJson = totaljson
             )
             holder.itemView.findNavController().navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
-        return tvgson.results.size
+        return viewModel.json.value!!.results.size
     }
 }

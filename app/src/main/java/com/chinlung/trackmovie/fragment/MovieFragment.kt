@@ -42,10 +42,11 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
-        Log.d("movie","here")
 
         viewModel.json.observe(viewLifecycleOwner) {
-            binding.recyclerMovie.adapter =  MovieAdapter(requireContext(), it,viewModel)
+            Log.d("movie","here")
+
+            binding.recyclerMovie.adapter =  MovieAdapter(viewModel)
             binding.recyclerMovie.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             binding.recyclerMovie.setHasFixedSize(true)

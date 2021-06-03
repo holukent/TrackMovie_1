@@ -8,10 +8,6 @@
             name="viewModels"
             type="com.chinlung.trackmovie.viewmodel.ViewModels" />
 
-        <variable
-            name="searchkeywordjson"
-            type="com.chinlung.trackmovie.model.SearchKeyWordJson" />
-
     </data>
 
     <com.google.android.material.card.MaterialCardView
