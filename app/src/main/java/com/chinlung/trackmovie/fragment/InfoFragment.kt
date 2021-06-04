@@ -20,16 +20,16 @@ class InfoFragment : Fragment() {
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentInfoBinding
 
-    private var position: Int = 0
+//    private var position: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments.let {
-            position = it!!.getInt("position")
-//            json = it.getParcelable("totalJson")!!
-        }
+//        arguments.let {
+//            position = it?.getInt("position") ?: 0
+////            json = it.getParcelable("totalJson")!!
+//        }
     }
 
     override fun onCreateView(

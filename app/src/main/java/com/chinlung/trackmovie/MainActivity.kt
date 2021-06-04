@@ -1,6 +1,7 @@
 package com.chinlung.trackmovie
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,7 +12,7 @@ import com.chinlung.trackmovie.viewmodel.ViewModels
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navcontroller: NavController
+    private lateinit var navController: NavController
     private val viewModel: ViewModels by viewModels()
     private lateinit var binding: ActivityMainBinding
 
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
         const val TABLE_TV = "tv_table"
         const val TABLE_MOVIE = "movie_table"
         const val DATABASE_TMDB = "dataBaseTMDB"
+        const val MOVIE_STATE = "movie"
+        const val TV_STATE = "tv"
+        const val SEARCH_STATE = "search"
+        const val WATCHLIST_STATE = "watchlist"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,22 +35,22 @@ class MainActivity : AppCompatActivity() {
         //app:deaultNavHost = "true"
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navcontroller = navHostFragment.navController
+        navController = navHostFragment.navController
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.navBottonBar_Search ->{
-                    navcontroller.navigate(R.id.searchFragment)
+                    navController.navigate(R.id.searchFragment)
                 }
                 R.id.navBottonBar_WatchList-> {
-                    navcontroller.navigate(R.id.watchList)
+                    navController.navigate(R.id.watchList)
                 }
                 R.id.navBottonBar_Movie-> {
-                    navcontroller.navigate(R.id.movieFragment)
+                    navController.navigate(R.id.movieFragment)
                 }
                 R.id.navBottonBar_Tv -> {
-                    navcontroller.navigate(R.id.tvFragment)
+                    navController.navigate(R.id.tvFragment)
                 }
             }
             viewModel.getNavBarItem(it.itemId)
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomNavigation.setOnNavigationItemReselectedListener {}
 
+        Log.d("navber","${ binding.bottomNavigation}")
         //appbarbackupkey
 //        setupActionBarWithNavController(navcontroller)
     }

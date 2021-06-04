@@ -18,13 +18,4 @@ class TmdbApi {
         const val TMDB_SEARCH = "https://api.themoviedb.org/3/search/"
         const val TMDB_IMAGE = "https://image.tmdb.org/t/p/w500"
     }
-    fun loadTmdbSearch(movieortv: String): String {
-
-        return "$TMDB_SEARCH$movieortv$TMDB_API"
-    }
-
-    fun getByid(id:Int, movieOrtv:String): String {
-        return "https://api.themoviedb.org/3/$movieOrtv/$id?api_key=${BuildConfig.TMDB_KEY}"
-
-    }
 }

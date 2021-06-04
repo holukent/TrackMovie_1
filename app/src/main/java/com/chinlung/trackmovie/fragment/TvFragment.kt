@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.TvAdapter
 import com.chinlung.trackmovie.databinding.FragmentTvBinding
 import com.chinlung.trackmovie.repository.TmdbApi
@@ -38,10 +40,27 @@ class TvFragment : Fragment() {
         viewModel.requestTmdbApi(TmdbApi.TMDB_TV_HOT)
 
         viewModel.json.observe(viewLifecycleOwner) {
-            binding.recyclerTv.adapter = TvAdapter(viewModel)
-            binding.recyclerTv.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerTv.setHasFixedSize(true)
+            setRecycler(binding.recyclerTv)
+            if (viewModel.getstate(MainActivity.TV_STATE) != null){
+                binding.recyclerTv.layoutManager!!.onRestoreInstanceState(
+                    viewModel.getstate(MainActivity.TV_STATE)
+                )
+            }
+
         }
+    }
+
+    override fun onPause() {
+        viewModel.saveState(
+            MainActivity.TV_STATE,
+            binding.recyclerTv.layoutManager?.onSaveInstanceState()!!
+        )
+        super.onPause()
+    }
+    private fun setRecycler(recyclerMovie: RecyclerView) {
+        recyclerMovie.adapter = TvAdapter(viewModel)
+        recyclerMovie.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerMovie.setHasFixedSize(true)
     }
 }

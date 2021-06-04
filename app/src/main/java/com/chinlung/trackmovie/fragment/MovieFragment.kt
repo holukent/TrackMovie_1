@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.MovieAdapter
 import com.chinlung.trackmovie.databinding.FragmentMovieBinding
 import com.chinlung.trackmovie.repository.TmdbApi
@@ -18,9 +20,9 @@ import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class MovieFragment : Fragment() {
 
-
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentMovieBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,19 +45,31 @@ class MovieFragment : Fragment() {
 
         viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
 
+
         viewModel.json.observe(viewLifecycleOwner) {
-            Log.d("movie","here")
+            setRecycler(binding.recyclerMovie)
 
-            binding.recyclerMovie.adapter =  MovieAdapter(viewModel)
-            binding.recyclerMovie.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerMovie.setHasFixedSize(true)
+            if (viewModel.getstate(MainActivity.MOVIE_STATE) != null) {
+                binding.recyclerMovie.layoutManager?.onRestoreInstanceState(
+                    viewModel.getstate(MainActivity.MOVIE_STATE)
+                )
+            }
         }
+    }
 
+    fun setRecycler(recyclerMovie: RecyclerView) {
+        recyclerMovie.adapter = MovieAdapter(viewModel)
+        recyclerMovie.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerMovie.setHasFixedSize(true)
     }
 
     override fun onPause() {
         super.onPause()
+        viewModel.saveState(
+            MainActivity.MOVIE_STATE,
+            binding.recyclerMovie.layoutManager?.onSaveInstanceState()!!
+        )
         Log.d("recyclerlife", "onpause")
     }
 

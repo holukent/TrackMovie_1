@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.repository.TmdbApi
@@ -45,7 +46,10 @@ class SearchAdapter(
 
         holder.searchTitle.text = viewModel.json.value!!.results[position].title
         holder.searchrelease.text = "發佈日期: ${viewModel.json.value!!.results[position].release_date}"
-        holder.itemView.setOnClickListener {    }
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(R.id.infoFragment)
+            viewModel.getPosition(position)
+        }
     }
 
     override fun getItemCount(): Int {

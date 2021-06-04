@@ -29,11 +29,6 @@
             android:name="position"
             app:argType="integer" />
 
-<!--        <argument-->
-<!--            android:name="totalJson"-->
-<!--            app:argType="com.chinlung.trackmovie.model.TotalJson"-->
-<!--            app:nullable="true"-->
-<!--            android:defaultValue="@null" />-->
 
     </fragment>
     <fragment
@@ -53,7 +48,9 @@
         tools:layout="@layout/fragment_tv" >
         <action
             android:id="@+id/action_tvFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
+            app:destination="@id/infoFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:popEnterAnim="@anim/slide_in_right"/>
     </fragment>
 
 

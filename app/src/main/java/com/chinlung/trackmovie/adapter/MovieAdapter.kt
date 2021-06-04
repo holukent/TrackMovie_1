@@ -3,6 +3,7 @@ package com.chinlung.trackmovie.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class MovieAdapter(
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val moviePoster: ImageView = itemView.findViewById(R.id.poster)
+        val button: Button = itemView.findViewById(R.id.btn_test)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -39,6 +41,11 @@ class MovieAdapter(
             )
             it.findNavController().navigate(action)
         }
+
+        holder.button.setOnClickListener {
+
+        }
+
     }
 
     override fun getItemCount(): Int {
