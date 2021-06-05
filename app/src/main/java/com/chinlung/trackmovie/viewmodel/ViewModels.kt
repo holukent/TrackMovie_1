@@ -93,16 +93,16 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     fun editSearchApi(edit: String) {
         _url.value = if (tabLayoutItem.value.equals(TmdbApi.TV, ignoreCase = true))
-            "${TmdbApi.TMDB_SEARCH}${TmdbApi.TV}${TmdbApi.TMDB_API}&query=$edit"
+            "${TmdbApi.TMDB_SEARCH}${TmdbApi.TV}${TmdbApi.TMDB_API}&language=zh-TW&query=$edit"
         else
-            "${TmdbApi.TMDB_SEARCH}${TmdbApi.MOVIE}${TmdbApi.TMDB_API}&query=$edit"
+            "${TmdbApi.TMDB_SEARCH}${TmdbApi.MOVIE}${TmdbApi.TMDB_API}&language=zh-TW&query=$edit"
     }
 
     fun setUrl() {
         _url.value = "${TmdbApi.TMDB_IMAGE}${json.value!!.results[position.value!!].poster_path}"
     }
 
-    fun getstate(fragment: String): Parcelable? {
+    fun getState(fragment: String): Parcelable? {
         return savedStateHandle[fragment]
     }
 

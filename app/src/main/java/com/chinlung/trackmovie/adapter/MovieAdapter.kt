@@ -19,7 +19,7 @@ class MovieAdapter(
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val moviePoster: ImageView = itemView.findViewById(R.id.poster)
-        val button: Button = itemView.findViewById(R.id.btn_test)
+//        val button: Button = itemView.findViewById(R.id.btn_test)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -36,16 +36,11 @@ class MovieAdapter(
         holder.itemView.setOnClickListener {
             viewModel.getPosition(position)
             val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-                position = position,
+//                position = position,
 //                totalJson = totalJson
             )
             it.findNavController().navigate(action)
         }
-
-        holder.button.setOnClickListener {
-
-        }
-
     }
 
     override fun getItemCount(): Int {

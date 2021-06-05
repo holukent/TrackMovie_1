@@ -2,7 +2,6 @@ package com.chinlung.trackmovie.fragment
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,13 +44,12 @@ class MovieFragment : Fragment() {
 
         viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
 
-
         viewModel.json.observe(viewLifecycleOwner) {
             setRecycler(binding.recyclerMovie)
 
-            if (viewModel.getstate(MainActivity.MOVIE_STATE) != null) {
+            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
                 binding.recyclerMovie.layoutManager?.onRestoreInstanceState(
-                    viewModel.getstate(MainActivity.MOVIE_STATE)
+                    viewModel.getState(MainActivity.MOVIE_STATE)
                 )
             }
         }
@@ -70,17 +68,5 @@ class MovieFragment : Fragment() {
             MainActivity.MOVIE_STATE,
             binding.recyclerMovie.layoutManager?.onSaveInstanceState()!!
         )
-        Log.d("recyclerlife", "onpause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("recyclerlife", "onstop")
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("recyclerlife", "ondestroy")
     }
 }

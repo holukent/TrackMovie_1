@@ -33,7 +33,7 @@ class TvAdapter( val viewModel: ViewModels) :
         holder.itemView.setOnClickListener {
             viewModel.getPosition(position)
             val action = TvFragmentDirections.actionTvFragmentToInfoFragment(
-                position = position,
+//                position = position,
 //                totalJson = totaljson
             )
             holder.itemView.findNavController().navigate(action)

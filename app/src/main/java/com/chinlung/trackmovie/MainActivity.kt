@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomNavigation.setOnNavigationItemReselectedListener {}
 
-        Log.d("navber","${ binding.bottomNavigation}")
         //appbarbackupkey
 //        setupActionBarWithNavController(navcontroller)
     }

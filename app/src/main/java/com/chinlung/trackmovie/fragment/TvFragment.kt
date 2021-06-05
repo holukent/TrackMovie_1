@@ -41,9 +41,9 @@ class TvFragment : Fragment() {
 
         viewModel.json.observe(viewLifecycleOwner) {
             setRecycler(binding.recyclerTv)
-            if (viewModel.getstate(MainActivity.TV_STATE) != null){
+            if (viewModel.getState(MainActivity.TV_STATE) != null){
                 binding.recyclerTv.layoutManager!!.onRestoreInstanceState(
-                    viewModel.getstate(MainActivity.TV_STATE)
+                    viewModel.getState(MainActivity.TV_STATE)
                 )
             }
 

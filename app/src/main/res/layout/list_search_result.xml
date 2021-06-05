@@ -8,6 +8,9 @@
             name="viewModels"
             type="com.chinlung.trackmovie.viewmodel.ViewModels" />
 
+        <variable
+            name="result"
+            type="com.chinlung.trackmovie.model.Result" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -26,7 +29,8 @@
                 android:layout_height="138dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/w92" />
+                tools:src="@drawable/w92"
+                />
 
             <TextView
                 android:id="@+id/search_titleName"
@@ -39,7 +43,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_poster"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="123123123" />
+                android:text="@{result.title}" />
 
             <TextView
                 android:id="@+id/search_releaseDate"
@@ -50,6 +54,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_poster"
                 app:layout_constraintTop_toBottomOf="@id/search_titleName"
+                android:text="@{result.release_date}"
                 tools:text="123123123" />
 
 
