@@ -51,10 +51,10 @@ class TvFragment : Fragment() {
     }
 
     override fun onPause() {
-        viewModel.saveState(
-            MainActivity.TV_STATE,
-            binding.recyclerTv.layoutManager?.onSaveInstanceState()!!
-        )
+//        viewModel.saveState(
+//            MainActivity.TV_STATE,
+//            binding.recyclerTv.layoutManager?.onSaveInstanceState()!!
+//        )
         super.onPause()
     }
     private fun setRecycler(recyclerMovie: RecyclerView) {

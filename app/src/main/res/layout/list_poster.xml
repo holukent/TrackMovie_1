@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.chinlung.trackmovie.viewmodel.ViewModels" />
+        <variable
+            name="result"
+            type="com.chinlung.trackmovie.model.Result" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -26,17 +29,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 />
-
-            <TextView
-                android:id="@+id/text_poster"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:gravity="center"
-                tools:text="test"
-                android:textSize="50sp"
-                />
-
 <!--            <com.google.android.material.button.MaterialButton-->
 <!--                android:id="@+id/btn_test"-->
 <!--                android:layout_width="match_parent"-->

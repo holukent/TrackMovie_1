@@ -42,21 +42,21 @@ class MovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
-
-        viewModel.json.observe(viewLifecycleOwner) {
-            setRecycler(binding.recyclerMovie)
-
-            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
-                binding.recyclerMovie.layoutManager?.onRestoreInstanceState(
-                    viewModel.getState(MainActivity.MOVIE_STATE)
-                )
-            }
-        }
+//        viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
+//
+//        viewModel.json.observe(viewLifecycleOwner) {
+//            setRecycler(binding.recyclerMovie)
+//
+//            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
+//                binding.recyclerMovie.layoutManager?.onRestoreInstanceState(
+//                    viewModel.getState(MainActivity.MOVIE_STATE)
+//                )
+//            }
+//        }
     }
 
-    fun setRecycler(recyclerMovie: RecyclerView) {
-        recyclerMovie.adapter = MovieAdapter(viewModel)
+    private fun setRecycler(recyclerMovie: RecyclerView) {
+        recyclerMovie.adapter = MovieAdapter(viewModel,viewModel.json.value!!.results)
         recyclerMovie.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerMovie.setHasFixedSize(true)
@@ -64,9 +64,9 @@ class MovieFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveState(
-            MainActivity.MOVIE_STATE,
-            binding.recyclerMovie.layoutManager?.onSaveInstanceState()!!
-        )
+//        viewModel.saveState(
+//            MainActivity.MOVIE_STATE,
+//            binding.recyclerMovie.layoutManager?.onSaveInstanceState()!!
+//        )
     }
 }

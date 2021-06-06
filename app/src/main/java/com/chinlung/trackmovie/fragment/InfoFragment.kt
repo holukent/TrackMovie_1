@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
-import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -20,16 +19,9 @@ class InfoFragment : Fragment() {
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentInfoBinding
 
-//    private var position: Int? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        arguments.let {
-//            position = it?.getInt("position") ?: 0
-////            json = it.getParcelable("totalJson")!!
-//        }
     }
 
     override fun onCreateView(
@@ -44,6 +36,7 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.infoOverview.movementMethod = ScrollingMovementMethod.getInstance()
 
         binding.apply {
@@ -52,7 +45,11 @@ class InfoFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        viewModel.setUrl()
+        viewModel.jsonn.observe(viewLifecycleOwner){
+            viewModel.setImageUrl()
+            viewModel.setGenres()
+
+        }
 
 
 //        viewModel.setImage( binding.infoPoster,
@@ -62,16 +59,28 @@ class InfoFragment : Fragment() {
             View.GONE
     }
 
+
     fun googleInfo() {
         val queryUrl: Uri =
-            Uri.parse("${ViewModels.CHROME_SEARCH_PREFIX}${viewModel.json.value!!
-                .results[viewModel.position.value!!].title}")
+            Uri.parse(
+                "${ViewModels.CHROME_SEARCH_PREFIX}${
+                    viewModel.jsonn.value?.title ?: ""
+                }"
+            )
         requireContext().startActivity(Intent(Intent.ACTION_VIEW, queryUrl))
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.cleanImageUrl()
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.VISIBLE
     }
+
+    override fun onStop() {
+        super.onStop()
+        binding.infoPoster.setImageDrawable(null)
+    }
+
+
 }

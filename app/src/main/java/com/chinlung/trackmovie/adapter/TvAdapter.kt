@@ -30,14 +30,14 @@ class TvAdapter( val viewModel: ViewModels) :
             "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}"
         )
 
-        holder.itemView.setOnClickListener {
-            viewModel.getPosition(position)
-            val action = TvFragmentDirections.actionTvFragmentToInfoFragment(
-//                position = position,
-//                totalJson = totaljson
-            )
-            holder.itemView.findNavController().navigate(action)
-        }
+//        holder.itemView.setOnClickListener {
+//            viewModel.getPosition(position)
+//            val action = TvFragmentDirections.actionTvFragmentToInfoFragment(
+////                position = position,
+////                totalJson = totaljson
+//            )
+//            holder.itemView.findNavController().navigate(action)
+//        }
     }
 
     override fun getItemCount(): Int {

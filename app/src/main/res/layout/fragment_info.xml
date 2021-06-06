@@ -30,10 +30,12 @@
             android:layout_height="277dp"
             android:layout_margin="10dp"
             android:layout_marginEnd="10dp"
-            app:imageUrl="@{viewModeles.url}"
             android:onClick="@{() -> infoFragment.googleInfo()}"
+            app:imageUrl="@{viewModeles.url}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
 
         <TextView
             android:id="@+id/info_releaseDate"
@@ -47,22 +49,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toTopOf="@id/info_poster"
-            tools:text="@{@string/info_releaseDate(viewModeles.json.results[viewModeles.position].release_date)}" />
+            tools:text="@{@string/info_releaseDate(viewModeles.jsonn.release_date)}" />
 
         <TextView
-            android:id="@+id/info_popularity"
+            android:id="@+id/info_production_companies"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_releaseDate"
-            tools:text="@{@string/info_popularity(viewModeles.json.results[viewModeles.position].popularity)}" />
+            tools:text="@{@string/info_popularity(viewModeles.jsonn.production_companies[0].name)}" />
 
         <TextView
             android:id="@+id/info_vote_average"
@@ -75,8 +76,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
-            app:layout_constraintTop_toBottomOf="@id/info_popularity"
-            tools:text="@{@string/info_vote_average(viewModeles.json.results[viewModeles.position].vote_average)}" />
+            app:layout_constraintTop_toBottomOf="@id/info_production_companies"
+            tools:text="@{@string/info_vote_average(viewModeles.jsonn.vote_average)}" />
 
         <TextView
             android:id="@+id/info_vote_Count"
@@ -90,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_vote_average"
-            tools:text="@{@string/info_vote_count(viewModeles.json.results[viewModeles.position].vote_count)}" />
+            tools:text="@{@string/info_vote_count(viewModeles.jsonn.vote_average)}" />
 
 
         <TextView
@@ -112,7 +113,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/info_overview_title"
-            tools:text="@{viewModeles.json.results[viewModeles.position].overview}" />
+            tools:text="@{viewModeles.jsonn.overview}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

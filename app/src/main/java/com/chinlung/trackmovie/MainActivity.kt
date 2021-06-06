@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.chinlung.trackmovie.databinding.ActivityMainBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         const val DATABASE_TMDB = "dataBaseTMDB"
         const val MOVIE_STATE = "movie"
         const val TV_STATE = "tv"
+        const val HOME_STATE = "home"
         const val SEARCH_STATE = "search"
         const val WATCHLIST_STATE = "watchlist"
 
@@ -39,19 +41,22 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.navBottonBar_Search ->{
+            when (it.itemId) {
+                R.id.navBottonBar_Search -> {
                     navController.navigate(R.id.searchFragment)
                 }
-                R.id.navBottonBar_WatchList-> {
+                R.id.navBottonBar_WatchList -> {
                     navController.navigate(R.id.watchList)
                 }
-                R.id.navBottonBar_Movie-> {
-                    navController.navigate(R.id.movieFragment)
+                R.id.navBottonBar_Home -> {
+                    navController.navigate(R.id.homeFragment)
                 }
-                R.id.navBottonBar_Tv -> {
-                    navController.navigate(R.id.tvFragment)
-                }
+//                R.id.navBottonBar_Movie -> {
+//                    navController.navigate(R.id.movieFragment)
+//                }
+//                R.id.navBottonBar_Tv -> {
+//                    navController.navigate(R.id.tvFragment)
+//                }
             }
             viewModel.getNavBarItem(it.itemId)
             true
@@ -59,14 +64,13 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemReselectedListener {}
 
         //appbarbackupkey
-//        setupActionBarWithNavController(navcontroller)
+        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-//        return super.onSupportNavigateUp() || navcontroller.navigateUp()
+        return super.onSupportNavigateUp() || navController.navigateUp()
         return super.onSupportNavigateUp()
     }
-
 
 
 //    fun openDb(): TmdbDataBase {

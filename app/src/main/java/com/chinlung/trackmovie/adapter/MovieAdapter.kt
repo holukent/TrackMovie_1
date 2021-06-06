@@ -9,38 +9,44 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.fragment.MovieFragmentDirections
 import com.chinlung.trackmovie.R
+import com.chinlung.trackmovie.databinding.ListPosterBinding
+import com.chinlung.trackmovie.model.Result
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class MovieAdapter(
-    val viewModel: ViewModels
+    val viewModel: ViewModels,
+    val results: List<Result>
 ) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val moviePoster: ImageView = itemView.findViewById(R.id.poster)
-//        val button: Button = itemView.findViewById(R.id.btn_test)
+    class MovieViewHolder(val binding: ListPosterBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(result: Result) {
+            binding.result = result
+            binding.executePendingBindings()
+        }
+//        val moviePoster: ImageView = itemView.findViewById(R.id.poster)
+////        val button: Button = itemView.findViewById(R.id.btn_test)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val adapterLayoutView =
-            LayoutInflater.from(parent.context).inflate(R.layout.list_poster, parent, false)
-        return MovieViewHolder(adapterLayoutView)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ListPosterBinding.inflate(inflater, parent, false)
+        return MovieViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        holder.bind(results[position])
+        viewModel.setImage(
+            holder.binding.poster,
+            "${TmdbApi.TMDB_IMAGE}${results[position].poster_path}"
+        )
 
-        viewModel.setImage(holder.moviePoster,
-            "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}")
-
-        holder.itemView.setOnClickListener {
-            viewModel.getPosition(position)
-            val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment(
-//                position = position,
-//                totalJson = totalJson
-            )
-            it.findNavController().navigate(action)
-        }
+//        holder.itemView.setOnClickListener {
+//            viewModel.getPosition(position)
+//            val action = MovieFragmentDirections.actionMovieFragmentToInfoFragment()
+//            it.findNavController().navigate(action)
+//        }
     }
 
     override fun getItemCount(): Int {

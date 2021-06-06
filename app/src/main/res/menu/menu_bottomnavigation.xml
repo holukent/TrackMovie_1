@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navBottonBar_Movie"
+        android:id="@+id/navBottonBar_Home"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_movie_filter_24"
-        android:title="@string/movie" />
-    <item
-        android:id="@+id/navBottonBar_Tv"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_live_tv_24"
-        android:title="@string/tv" />
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/navBar_label_Home"/>
+
     <item
         android:id="@+id/navBottonBar_Search"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_search_24"
-        android:title="@string/search" />
+        android:title="@string/navBar_label_search" />
     <item
         android:id="@+id/navBottonBar_WatchList"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_view_list_24"
-        android:title="@string/watchkist" />
+        android:title="@string/navBar_label_watchlist" />
+
+<!--    <item-->
+<!--        android:id="@+id/navBottonBar_Movie"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/ic_baseline_movie_filter_24"-->
+<!--        android:title="@string/movie" />-->
+<!--    <item-->
+<!--        android:id="@+id/navBottonBar_Tv"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/ic_baseline_live_tv_24"-->
+<!--        android:title="@string/tv" />-->
+
 </menu>

@@ -23,10 +23,7 @@ class SearchAdapter(
 
     class SearchViewHolder(val binding: ListSearchResultBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        //        val searchimg: ImageView = itemView.findViewById(R.id.search_poster)
-//        val searchTitle: TextView = itemView.findViewById(R.id.search_titleName)
-//        val searchrelease: TextView = itemView.findViewById(R.id.search_releaseDate)
-//        val icon: CheckBox = itemView.findViewById(R.id.icon)
+
         fun bind(result: Result) {
             binding.result = result
             binding.executePendingBindings()
@@ -34,9 +31,7 @@ class SearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-//        val adapterLayoutView =
-//            LayoutInflater.from(parent.context).inflate(R.layout.list_search_result, parent, false)
-//        return SearchViewHolder(adapterLayoutView)
+
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListSearchResultBinding.inflate(inflater,parent,false)
         return SearchViewHolder(binding)
@@ -56,12 +51,7 @@ class SearchAdapter(
                 Log.d("icon", "$isChecked")
             }
         }
-//
-//        viewModel.setImage(holder.searchimg,
-//            "${TmdbApi.TMDB_IMAGE}${results[position].poster_path}")
-//
-//        holder.searchTitle.text = results[position].title
-//        holder.searchrelease.text = "發佈日期: ${results[position].release_date}"
+
         holder.itemView.setOnClickListener {
             viewModel.getPosition(position)
             it.findNavController().navigate(R.id.infoFragment)
