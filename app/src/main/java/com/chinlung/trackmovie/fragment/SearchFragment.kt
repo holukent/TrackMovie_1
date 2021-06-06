@@ -41,6 +41,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        viewModel.dbGetAll(viewModel.openDb(requireContext()))
+
         binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
 
         viewModel.editInput.observe(viewLifecycleOwner) {
@@ -75,6 +77,7 @@ class SearchFragment : Fragment() {
                 viewModel.getTabLayoutItem(tab)
                 if (viewModel.editInput.value != "" && viewModel.editInput.value != null)
                     viewModel.requestSeachApi(viewModel.editSearchApi(viewModel.editInput.value!!))
+                viewModel.dbGetAll(viewModel.openDb(requireContext()))
 
 
             }

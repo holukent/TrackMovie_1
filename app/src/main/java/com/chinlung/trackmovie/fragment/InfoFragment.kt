@@ -73,11 +73,4 @@ class InfoFragment : Fragment() {
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.VISIBLE
     }
-
-    override fun onStop() {
-        super.onStop()
-        binding.infoPoster.setImageDrawable(null)
-    }
-
-
 }

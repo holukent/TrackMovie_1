@@ -69,16 +69,16 @@
                 app:layout_constraintStart_toEndOf="@id/search_poster"
                 app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/search_addWatchList"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:shadowColor="@color/white"
-                android:text="WATCHLIST"
-                app:icon="@drawable/ic_baseline_add_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/search_addWatchList"-->
+<!--                style="@style/Widget.MaterialComponents.Button.Icon"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:shadowColor="@color/white"-->
+<!--                android:text="WATCHLIST"-->
+<!--                app:icon="@drawable/ic_baseline_add_24"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

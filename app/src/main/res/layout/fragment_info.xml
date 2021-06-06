@@ -35,6 +35,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/info_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/info_poster"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{@string/info_titleName(viewModeles.jsonn.title)}"
+            />
+
 
 
         <TextView
@@ -45,10 +60,10 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
-            app:layout_constraintTop_toTopOf="@id/info_poster"
+            app:layout_constraintTop_toBottomOf="@id/info_title"
             tools:text="@{@string/releaseDate(viewModeles.jsonn.release_date)}" />
 
         <TextView
@@ -59,7 +74,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_releaseDate"
@@ -73,7 +88,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_production_companies"
@@ -87,11 +102,12 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_vote_average"
-            tools:text="@{@string/info_vote_count(viewModeles.geners)}" />
+            app:layout_constraintBottom_toBottomOf="@id/info_poster"
+            tools:text="@{viewModeles.geners}" />
 
 
         <TextView

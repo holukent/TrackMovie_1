@@ -37,6 +37,8 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(results[position])
 
+        if (viewModel.dblist.value!!.map { it.movieid }.contains(results[position].id.toString()))
+            holder.binding.icon.isChecked = true
 
         viewModel.setImage(
             holder.binding.searchPoster,
@@ -50,28 +52,24 @@ class SearchAdapter(
             it.findNavController().navigate(action)
         }
 
-        holder.binding.searchAddWatchList.setOnClickListener {
-            val db = viewModel.openDb(context)
-            viewModel.dbInsert(
-                db,
-                results[position].id.toString(),
-                results[position].poster_path,
-                results[position].title,
-                viewModel.tabLayoutItem.value!!.first
-            )
+        holder.binding.icon.setOnCheckedChangeListener { _, isChecked ->
+            Log.d("checkcheck", "$isChecked")
+            if (isChecked) {
+                viewModel.dbInsert(
+                    viewModel.openDb(context),
+                    results[position].id.toString(),
+                    results[position].poster_path,
+                    results[position].title,
+                    viewModel.tabLayoutItem.value!!.first
+                )
 
-
+            } else {
+                viewModel.deleteByMovieId(
+                    viewModel.openDb(context),
+                    results[position].id.toString()
+                )
+            }
         }
-
-
-        //        holder.binding.icon.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                Log.d("icon", "$isChecked")
-//
-//            } else {
-//                Log.d("icon", "$isChecked")
-//            }
-//        }
     }
 
     override fun getItemCount(): Int {

@@ -14,7 +14,7 @@ import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class WatchList : Fragment() {
     val viewModel: ViewModels by activityViewModels()
-    lateinit var binding:FragmentWatchListBinding
+    lateinit var binding: FragmentWatchListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

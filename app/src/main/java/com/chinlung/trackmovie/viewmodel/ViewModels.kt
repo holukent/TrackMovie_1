@@ -220,16 +220,32 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     fun dbGetAll(db: TmdbDataBase) {
         viewModelScope.launch(Dispatchers.IO) {
+
             _dblist.postValue(db.movieDao().getAll())
+            db.close()
         }
     }
 
-    fun delete(db: TmdbDataBase, id:Int) {
+    fun deleteByid(db: TmdbDataBase, id:Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.movieDao().delete(id)
+            db.movieDao().deleteByid(id)
             dbGetAll(db)
         }
     }
 
+    fun deleteByMovieId(db: TmdbDataBase,movieid:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.movieDao().deleteByMovieId(movieid)
+            dbGetAll(db)
+        }
+    }
 
+    fun setCheck(db:TmdbDataBase,id:String):Boolean {
+        var result:Boolean = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = db.movieDao().getAll().map { it.movieid }
+            result = list.contains(id)
+        }
+        return result
+    }
 }

@@ -13,14 +13,16 @@ interface MovieDao {
     @Query("SELECT * FROM table_movie WHERE movieid IN (:userIds)")
     fun loadAllByIds(userIds:IntArray): List<Movie>
 
-    @Query("select * from table_movie where poster_path LIKE :poster_path")
-    fun findByName(poster_path:String): Movie
+    @Query("select * from table_movie where title LIKE :title")
+    fun findByName(title:String): Movie
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(movies:Movie)
 
     @Query("DELETE FROM table_movie WHERE _id = :id")
-    fun delete(id:Int)
+    fun deleteByid(id:Int)
 
+    @Query("DELETE FROM table_movie WHERE movieid = :movieid")
+    fun deleteByMovieId(movieid:String)
 
 }

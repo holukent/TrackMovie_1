@@ -10,12 +10,11 @@
     <string name="search_hint">請輸入電影或影集</string>
     <string name="app_label">app_label</string>
     <string name="info_overview_title">劇情大綱</string>
-    <string name="info_titleName">{title}</string>
+    <string name="info_titleName">片名: %s</string>
     <string name="info_overview">%s</string>
-    <string name="releaseDate">上映日期: \n%s</string>
+    <string name="releaseDate">上映日期: %s</string>
     <string name="info_popularity">製片公司: \n%s</string>
     <string name="info_vote_average">平均評分: %s</string>
-    <string name="info_vote_count">類型: \n%s</string>
     <string name="edit_input_search"></string>
     <string name="add_watchlist">ADD WATCHLIST</string>
 </resources>
