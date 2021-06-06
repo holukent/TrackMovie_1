@@ -3,6 +3,7 @@ package com.chinlung.trackmovie.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,16 +41,18 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
+
         viewModel.editInput.observe(viewLifecycleOwner) {
-            viewModel.editSearchApi(it)
-            if(it != "") viewModel.requestTmdbApi()
+
+            if (it != "") viewModel.requestSeachApi(viewModel.editSearchApi(it))
         }
 
         viewModel.json.observe(viewLifecycleOwner) {
             if (viewModel.editInput.value != "" && viewModel.editInput.value != null) {
-                setRecycler(binding.recyclerSearch)
-                if(viewModel.getState(MainActivity.SEARCH_STATE) != null){
-                    binding.recyclerSearch.layoutManager!!.onRestoreInstanceState(
+                setRecycler(binding.recyclerSearchMovie)
+                if (viewModel.getState(MainActivity.SEARCH_STATE) != null) {
+                    binding.recyclerSearchMovie.layoutManager!!.onRestoreInstanceState(
                         viewModel.getState(MainActivity.SEARCH_STATE)
                     )
                 }
@@ -67,9 +70,13 @@ class SearchFragment : Fragment() {
             true
         }
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.getTabLayoutItem(tab)
+                if (viewModel.editInput.value != "" && viewModel.editInput.value != null)
+                    viewModel.requestSeachApi(viewModel.editSearchApi(viewModel.editInput.value!!))
+
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -89,13 +96,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun setRecycler(recyclerMovie: RecyclerView) {
-        recyclerMovie.adapter = SearchAdapter(viewModel,viewModel.json.value!!.results)
+        recyclerMovie.adapter =
+            SearchAdapter(requireContext(), viewModel, viewModel.json.value!!.results)
         recyclerMovie.setHasFixedSize(true)
     }
 
     override fun onPause() {
-        viewModel.saveState(MainActivity.SEARCH_STATE,
-            binding.recyclerSearch.layoutManager?.onSaveInstanceState()!!)
+        viewModel.saveState(
+            MainActivity.SEARCH_STATE,
+            binding.recyclerSearchMovie.layoutManager?.onSaveInstanceState()!!
+        )
         super.onPause()
     }
 }

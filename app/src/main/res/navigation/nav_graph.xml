@@ -31,7 +31,10 @@
         <action
             android:id="@+id/action_infoFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment" />
+             />
+        <action
+            android:id="@+id/action_infoFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
 
 
     </fragment>
@@ -39,12 +42,20 @@
         android:id="@+id/watchList"
         android:name="com.chinlung.trackmovie.fragment.WatchList"
         android:label="WATCHLIST"
-        tools:layout="@layout/fragment_watch_list" />
+        tools:layout="@layout/fragment_watch_list" >
+        <action
+            android:id="@+id/action_watchList_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.chinlung.trackmovie.fragment.SearchFragment"
         android:label="SEARCH"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tvFragment"
         android:name="com.chinlung.trackmovie.fragment.TvFragment"

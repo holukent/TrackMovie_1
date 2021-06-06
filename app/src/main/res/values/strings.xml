@@ -12,10 +12,10 @@
     <string name="info_overview_title">劇情大綱</string>
     <string name="info_titleName">{title}</string>
     <string name="info_overview">%s</string>
-    <string name="info_releaseDate">上映日期: \n%s</string>
+    <string name="releaseDate">上映日期: \n%s</string>
     <string name="info_popularity">製片公司: \n%s</string>
     <string name="info_vote_average">平均評分: %s</string>
-    <string name="info_vote_count">投票數量: %s</string>
+    <string name="info_vote_count">類型: \n%s</string>
     <string name="edit_input_search"></string>
     <string name="add_watchlist">ADD WATCHLIST</string>
 </resources>

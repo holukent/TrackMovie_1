@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navBottonBar_Search -> {
                     navController.navigate(R.id.searchFragment)
+                    viewModel.editInput("")
                 }
                 R.id.navBottonBar_WatchList -> {
                     navController.navigate(R.id.watchList)
@@ -64,24 +65,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnNavigationItemReselectedListener {}
 
         //appbarbackupkey
-        setupActionBarWithNavController(navController)
+//        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp() || navController.navigateUp()
+//        return super.onSupportNavigateUp() || navController.navigateUp()
         return super.onSupportNavigateUp()
     }
-
-
-//    fun openDb(): TmdbDataBase {
-//        val db=  Room.databaseBuilder(
-//            applicationContext,
-//            TmdbDataBase::class.java,
-//            "database-Tmdb"
-//        ).build()
-//
-//        val movieDao = db.movieDao()
-//        movieDao.insertAll()
-//        return db
-//    }
 }

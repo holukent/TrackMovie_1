@@ -7,20 +7,20 @@ import com.chinlung.trackmovie.room.entity.Movie
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM table_movie ORDER BY _id ASC")
+    @Query("SELECT * FROM table_movie ORDER BY _id DESC")
     fun getAll(): List<Movie>
 
-    @Query("SELECT * FROM table_movie WHERE _id IN (:userIds)")
+    @Query("SELECT * FROM table_movie WHERE movieid IN (:userIds)")
     fun loadAllByIds(userIds:IntArray): List<Movie>
 
-//    @Query("select * from table_movie where title LIKE :name")
-//    fun findByName(name:String): Movie
+    @Query("select * from table_movie where poster_path LIKE :poster_path")
+    fun findByName(poster_path:String): Movie
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(movies:Movie)
 
-    @Delete()
-    fun delete(movie:Movie)
+    @Query("DELETE FROM table_movie WHERE _id = :id")
+    fun delete(id:Int)
 
 
 }

@@ -8,9 +8,12 @@ import com.chinlung.trackmovie.MainActivity
 
 @Entity(tableName = "table_movie")
 data class Movie(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id") val mId: Int = 0,
-    @ColumnInfo(name = "movieid") val movieid:Int,
-    @ColumnInfo(name = "title") val title:String
+
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id") val id: Int = 0,
+    @ColumnInfo(name = "movieid") val movieid: String,
+    @ColumnInfo(name = "poster_path") val poster_path: String = "",
+    @ColumnInfo(name = "title") val title: String = "",
+    @ColumnInfo(name = "movieortv") val movieortv: String = "",
 ) {
 
 }

@@ -52,9 +52,6 @@ class InfoFragment : Fragment() {
         }
 
 
-//        viewModel.setImage( binding.infoPoster,
-//        "${TmdbApi.TMDB_IMAGE}${viewModel.json.value!!.results[position].poster_path}")
-
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.GONE
     }

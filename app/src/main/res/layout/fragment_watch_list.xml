@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,14 +10,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.WatchList">
+        tools:context=".fragment.WatchList"
+        android:background="@color/background_default">
 
-        <Chronometer
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/hello_textview"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/chronometer"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewWatchlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
 
     </FrameLayout>
 </layout>

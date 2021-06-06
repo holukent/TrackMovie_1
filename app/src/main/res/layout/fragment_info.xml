@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toTopOf="@id/info_poster"
-            tools:text="@{@string/info_releaseDate(viewModeles.jsonn.release_date)}" />
+            tools:text="@{@string/releaseDate(viewModeles.jsonn.release_date)}" />
 
         <TextView
             android:id="@+id/info_production_companies"
@@ -80,7 +80,7 @@
             tools:text="@{@string/info_vote_average(viewModeles.jsonn.vote_average)}" />
 
         <TextView
-            android:id="@+id/info_vote_Count"
+            android:id="@+id/info_geners"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/info_poster"
             app:layout_constraintTop_toBottomOf="@id/info_vote_average"
-            tools:text="@{@string/info_vote_count(viewModeles.jsonn.vote_average)}" />
+            tools:text="@{@string/info_vote_count(viewModeles.geners)}" />
 
 
         <TextView

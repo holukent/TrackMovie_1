@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModels"
             type="com.chinlung.trackmovie.viewmodel.ViewModels" />
@@ -29,8 +30,7 @@
                 android:layout_height="138dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/w92"
-                />
+                tools:src="@drawable/w92" />
 
             <TextView
                 android:id="@+id/search_titleName"
@@ -38,12 +38,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
+                android:text="@{result.title}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_poster"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@{result.title}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/search_releaseDate"
@@ -51,10 +51,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
+                android:text="@{@string/releaseDate(result.release_date)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_poster"
                 app:layout_constraintTop_toBottomOf="@id/search_titleName"
-                android:text="@{result.release_date}"
                 tools:text="123123123" />
 
 
@@ -62,24 +62,23 @@
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:button="@drawable/sl_favourite_24dp"
                 app:buttonTint="@android:color/white"
-                android:layout_marginStart="20dp"
                 app:layout_constraintStart_toEndOf="@id/search_poster"
                 app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />
 
-            <!--        <com.google.android.material.button.MaterialButton-->
-            <!--            android:id="@+id/search_addWatchList"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:text="WATCHLIST"-->
-            <!--            android:shadowColor="@color/white"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:icon="@drawable/ic_baseline_add_24"-->
-            <!--            style="@style/Widget.MaterialComponents.Button.Icon"-->
-            <!--            app:layout_constraintTop_toBottomOf="@id/search_releaseDate"-->
-            <!--            />-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/search_addWatchList"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/white"
+                android:text="WATCHLIST"
+                app:icon="@drawable/ic_baseline_add_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_releaseDate" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

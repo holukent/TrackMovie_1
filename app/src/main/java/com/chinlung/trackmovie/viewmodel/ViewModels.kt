@@ -1,20 +1,21 @@
 package com.chinlung.trackmovie.viewmodel
 
+import android.content.Context
 import android.os.Parcelable
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.*
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.model.*
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.room.entity.Movie
+import com.chinlung.trackmovie.room.roomdatabase.TmdbDataBase
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
-import org.json.JSONObject
 import java.io.*
 
 
@@ -43,8 +44,8 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _dataBase: MutableLiveData<List<Movie>> = MutableLiveData()
     val dataBase: LiveData<List<Movie>> get() = _dataBase
 
-    private var _tabLayoutItem: MutableLiveData<String> = MutableLiveData()
-    val tabLayoutItem: LiveData<String> get() = _tabLayoutItem
+    private var _tabLayoutItem: MutableLiveData<Pair<String, Int>> = MutableLiveData()
+    val tabLayoutItem: LiveData<Pair<String, Int>> get() = _tabLayoutItem
 
     private var _url: MutableLiveData<String> = MutableLiveData()
     val url: LiveData<String> get() = _url
@@ -61,7 +62,14 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var _jsonn: MutableLiveData<JsonToGson> = MutableLiveData()
     val jsonn: LiveData<JsonToGson> get() = _jsonn
 
+    private var _geners: MutableLiveData<String> = MutableLiveData()
+    val geners: LiveData<String> get() = _geners
+
+    private var _dblist = MutableLiveData<List<Movie>>()
+    val dblist: LiveData<List<Movie>> get() = _dblist
+
     init {
+        _tabLayoutItem.value = Pair("movie", 0)
     }
 
     fun getPosition(position: Int) {
@@ -108,12 +116,30 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 
-    fun getTabLayoutItem(tab: TabLayout.Tab) {
-        _tabLayoutItem.value = tab.text.toString()
+    fun requestSeachApi(api: String = url.value!!) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            api.requestBuild().enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("requset", "Failure")
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val json = Gson().fromJson(response.body!!.string(), TotalJson::class.java)
+                    _json.postValue(json)
+                }
+
+            })
+        }
     }
 
-    fun editSearchApi(edit: String) {
-        _url.value = if (tabLayoutItem.value.equals(TmdbApi.TV, ignoreCase = true))
+    fun getTabLayoutItem(tab: TabLayout.Tab) {
+        _tabLayoutItem.value =
+            if (tab.text.toString() == "MOVIE") Pair("movie", 0) else Pair("tv", 1)
+    }
+
+    fun editSearchApi(edit: String): String {
+        return if (tabLayoutItem.value!!.first.equals(TmdbApi.TV, ignoreCase = true))
             "${TmdbApi.TMDB_SEARCH}${TmdbApi.TV}${TmdbApi.TMDB_API}&language=zh-TW&query=$edit"
         else
             "${TmdbApi.TMDB_SEARCH}${TmdbApi.MOVIE}${TmdbApi.TMDB_API}&language=zh-TW&query=$edit"
@@ -122,7 +148,8 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     fun setImageUrl() {
         _url.value = "${TmdbApi.TMDB_IMAGE}${jsonn.value?.poster_path ?: ""}"
     }
-    fun cleanImageUrl(){
+
+    fun cleanImageUrl() {
         _url.value = ""
     }
 
@@ -135,10 +162,10 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
 
+    fun parseId(id: String, str: String = tabLayoutItem.value!!.first) {
 
-    fun parseId(id: String, str: String) {
         val api = "${TmdbApi.TMDB_GETMOVIE_BY_ID}$str/$id${TmdbApi.TMDB_API}&language=zh-TW"
-
+        Log.d("safsdf", "$api")
         viewModelScope.launch(Dispatchers.IO) {
 
             api.requestBuild().enqueue(object : Callback {
@@ -146,8 +173,9 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                 override fun onResponse(call: Call, response: Response) {
                     val result = response.body!!.string()
 
-                    _jsonn.postValue(Gson().fromJson(result,JsonToGson::class.java))
+                    _jsonn.postValue(Gson().fromJson(result, JsonToGson::class.java))
                 }
+
                 override fun onFailure(call: Call, e: IOException) {
                     Log.d("requset", "Failure")
                 }
@@ -162,7 +190,46 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
     fun setGenres() {
-        val genres = jsonn.value!!.genres.map { it.name }.joinToString()
-        Log.d("geners",genres)
+        _geners.value = jsonn.value!!.genres.map { it.name }.joinToString()
     }
+
+    fun openDb(context: Context): TmdbDataBase {
+        return Room.databaseBuilder(
+            context,
+            TmdbDataBase::class.java,
+            "database-Tmdb"
+        ).build()
+    }
+
+    fun dbInsert(db: TmdbDataBase, id: String, poster_path: String?, title: String, first: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = db.movieDao().getAll().map { it.movieid }
+            if (!list.contains(id))
+
+                db.movieDao().insert(
+                    Movie(
+                        movieid = id,
+                        poster_path = poster_path ?: "",
+                        title = title,
+                        movieortv = first
+                    )
+                )
+            db.close()
+        }
+    }
+
+    fun dbGetAll(db: TmdbDataBase) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _dblist.postValue(db.movieDao().getAll())
+        }
+    }
+
+    fun delete(db: TmdbDataBase, id:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.movieDao().delete(id)
+            dbGetAll(db)
+        }
+    }
+
+
 }
