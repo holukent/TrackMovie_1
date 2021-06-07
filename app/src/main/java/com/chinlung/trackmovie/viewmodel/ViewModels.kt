@@ -70,6 +70,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     init {
         _tabLayoutItem.value = Pair("movie", 0)
+
     }
 
     fun getPosition(position: Int) {
@@ -194,6 +195,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
     fun openDb(context: Context): TmdbDataBase {
+//        return TmdbDataBase.getDatabase(context)
         return Room.databaseBuilder(
             context,
             TmdbDataBase::class.java,
@@ -231,6 +233,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
             dbGetAll(db)
         }
     }
+
 
     fun deleteByMovieId(db: TmdbDataBase,movieid:String) {
         viewModelScope.launch(Dispatchers.IO) {

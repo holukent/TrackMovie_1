@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewModel.dbGetAll(viewModel.openDb(this))
+
         viewModel.dblist.observe(this) {
             Log.d("dblist","$it")
         }

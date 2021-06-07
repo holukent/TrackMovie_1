@@ -26,6 +26,7 @@ class SearchFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             activity?.finish()
         }
@@ -41,7 +42,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-//        viewModel.dbGetAll(viewModel.openDb(requireContext()))
 
         binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
 
