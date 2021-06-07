@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        viewModel.dbGetAll(viewModel.openDb(this))
+        viewModel.dblist.observe(this) {
+            Log.d("dblist","$it")
+        }
+
         //app:deaultNavHost = "true"
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

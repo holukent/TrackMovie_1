@@ -41,7 +41,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.dbGetAll(viewModel.openDb(requireContext()))
+//        viewModel.dbGetAll(viewModel.openDb(requireContext()))
 
         binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
 

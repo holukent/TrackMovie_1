@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.databinding.ListSearchResultBinding
@@ -62,12 +63,14 @@ class SearchAdapter(
                     results[position].title,
                     viewModel.tabLayoutItem.value!!.first
                 )
-
+                Toast.makeText(context,"已加入",Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.deleteByMovieId(
                     viewModel.openDb(context),
                     results[position].id.toString()
                 )
+                Toast.makeText(context,"已刪除",Toast.LENGTH_SHORT).show()
+
             }
         }
     }

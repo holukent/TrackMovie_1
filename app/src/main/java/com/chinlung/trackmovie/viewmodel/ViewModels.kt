@@ -220,7 +220,6 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     fun dbGetAll(db: TmdbDataBase) {
         viewModelScope.launch(Dispatchers.IO) {
-
             _dblist.postValue(db.movieDao().getAll())
             db.close()
         }
@@ -238,14 +237,5 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
             db.movieDao().deleteByMovieId(movieid)
             dbGetAll(db)
         }
-    }
-
-    fun setCheck(db:TmdbDataBase,id:String):Boolean {
-        var result:Boolean = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val list = db.movieDao().getAll().map { it.movieid }
-            result = list.contains(id)
-        }
-        return result
     }
 }
