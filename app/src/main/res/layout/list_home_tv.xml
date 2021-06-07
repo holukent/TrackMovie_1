@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="result"
+            type="com.chinlung.trackmovie.model.Result" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_margin="8dp"
+        android:background="@color/background_default">
+
+        <ImageView
+            android:background="@color/background_default"
+            android:id="@+id/img_home_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/tv"
+
+            tools:src="@drawable/w92"
+            />
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
