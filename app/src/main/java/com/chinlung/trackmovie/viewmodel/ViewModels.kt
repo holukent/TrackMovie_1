@@ -1,30 +1,42 @@
 package com.chinlung.trackmovie.viewmodel
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.*
 import androidx.room.Room
+import androidx.savedstate.SavedStateRegistryOwner
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.model.*
 import com.chinlung.trackmovie.repository.TmdbApi
+import com.chinlung.trackmovie.room.dao.MovieDao
 import com.chinlung.trackmovie.room.entity.Movie
 import com.chinlung.trackmovie.room.roomdatabase.TmdbDataBase
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cache
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.*
 
 
-class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class ViewModels(private val savedStateHandle: SavedStateHandle, private val itemDao: MovieDao) :
+    ViewModel() {
 
     companion object {
         const val CHROME_SEARCH_PREFIX = "https://www.google.com/search?q="
     }
 
+    fun data() = itemDao.getAll1().transform{
+        it.onEachIndexed { index, _ -> emit(index) }
+    }
+
+    val data:()->Flow<List<Movie>> = { itemDao.getAll1()  }
 
     private var _position: MutableLiveData<Int> = MutableLiveData()
     val position: LiveData<Int> = _position
@@ -159,7 +171,9 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
     fun saveState(fragment: String, state: Parcelable) {
+//        savedStateHandle.set(fragment,state)
         savedStateHandle[fragment] = state
+
     }
 
 
@@ -205,10 +219,10 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     fun dbInsert(db: TmdbDataBase, id: String, poster_path: String?, title: String, first: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = db.movieDao().getAll().map { it.movieid }
+            val list = itemDao.getAll().map { it.movieid }
             if (!list.contains(id))
 
-                db.movieDao().insert(
+                itemDao.insert(
                     Movie(
                         movieid = id,
                         poster_path = poster_path ?: "",
@@ -216,29 +230,59 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                         movieortv = first
                     )
                 )
+            dbGetAll(db)
             db.close()
         }
     }
 
     fun dbGetAll(db: TmdbDataBase) {
         viewModelScope.launch(Dispatchers.IO) {
-            _dblist.postValue(db.movieDao().getAll())
+            _dblist.postValue(itemDao.getAll())
             db.close()
         }
     }
 
-    fun deleteByid(db: TmdbDataBase, id:Int) {
+    fun deleteByid(db: TmdbDataBase, id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.movieDao().deleteByid(id)
+            itemDao.deleteByid(id)
             dbGetAll(db)
         }
     }
 
 
-    fun deleteByMovieId(db: TmdbDataBase,movieid:String) {
+    fun deleteByMovieId(db: TmdbDataBase, movieid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.movieDao().deleteByMovieId(movieid)
+            itemDao.deleteByMovieId(movieid)
             dbGetAll(db)
         }
     }
 }
+
+//class ViewModelFactory(val savedStateHandle: SavedStateHandle,val itemDao: MovieDao) : ViewModelProvider.Factory {
+//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(ViewModels::class.java)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return ViewModels(savedStateHandle,itemDao) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
+class ViewModelFactory(
+    private val itemDao: MovieDao,
+    owner: SavedStateRegistryOwner,
+    defaultArgs: Bundle?
+) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+    override fun <T : ViewModel?> create(
+        key: String,
+        modelClass: Class<T>,
+        handle: SavedStateHandle
+    ): T {
+        if (modelClass.isAssignableFrom(ViewModels::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ViewModels(handle, itemDao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+

@@ -27,6 +27,7 @@ class HomeMovieAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolderView {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListHomeMovieBinding.inflate(inflater, parent, false)
+
         return ItemHolderView(binding)
     }
 

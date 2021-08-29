@@ -12,12 +12,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.SearchAdapter
 import com.chinlung.trackmovie.databinding.FragmentSearchBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
@@ -77,7 +80,9 @@ class SearchFragment : Fragment() {
                 viewModel.getTabLayoutItem(tab)
                 if (viewModel.editInput.value != "" && viewModel.editInput.value != null)
                     viewModel.requestSeachApi(viewModel.editSearchApi(viewModel.editInput.value!!))
-                viewModel.dbGetAll(viewModel.openDb(requireContext()))
+                lifecycleScope.launch {
+                    viewModel.dbGetAll(viewModel.openDb(requireContext()))
+                }
 
 
             }
@@ -89,6 +94,12 @@ class SearchFragment : Fragment() {
             }
 
         })
+
+        lifecycleScope.launch {
+            viewModel.data().collect {
+                Log.d("viewModel.data()","$it")
+            }
+        }
     }
 
 

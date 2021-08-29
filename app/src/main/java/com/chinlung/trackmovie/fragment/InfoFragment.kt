@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import coil.load
 import com.chinlung.trackmovie.R
 import com.chinlung.trackmovie.databinding.FragmentInfoBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
@@ -34,8 +35,11 @@ class InfoFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         binding.infoOverview.movementMethod = ScrollingMovementMethod.getInstance()
 
@@ -72,5 +76,10 @@ class InfoFragment : Fragment() {
         viewModel.cleanImageUrl()
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)!!.visibility =
             View.VISIBLE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.infoPoster.setImageBitmap(null)
     }
 }

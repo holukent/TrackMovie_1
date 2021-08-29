@@ -8,19 +8,33 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.MainActivity
+import com.chinlung.trackmovie.MyApplication
 import com.chinlung.trackmovie.adapter.HomeMovieAdapter
 import com.chinlung.trackmovie.adapter.HomeTvAdapter
 import com.chinlung.trackmovie.databinding.FragmentHomeBinding
 import com.chinlung.trackmovie.repository.TmdbApi
+import com.chinlung.trackmovie.viewmodel.ViewModelFactory
 import com.chinlung.trackmovie.viewmodel.ViewModels
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: ViewModels by activityViewModels()
+    private val viewModel: ViewModels by activityViewModels(){
+        ViewModelFactory(
+            (activity?.application as MyApplication).container.db.movieDao(),
+            this,
+            null)
+    }
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +55,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("savedInstanceState","$savedInstanceState")
 
         if (viewModel.getState(MainActivity.MOVIE_STATE) == null)
             viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
@@ -57,7 +72,6 @@ class HomeFragment : Fragment() {
                     viewModel.getState(MainActivity.TV_STATE)
                 )
             }
-
         }
         viewModel.movieList.observe(viewLifecycleOwner) {
             setRecycler(binding.homeRecyclerMovie, HomeMovieAdapter(viewModel, it))
@@ -67,6 +81,14 @@ class HomeFragment : Fragment() {
                 )
             }
         }
+
+
+        lifecycleScope.launch {
+            viewModel.data().collect {
+                Log.d("viewModel.data()","$it")
+            }
+        }
+
     }
 
     private fun <T> setRecycler(recyclerMovie: RecyclerView, adapter: T) {
