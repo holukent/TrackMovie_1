@@ -217,6 +217,10 @@ class ViewModels(private val savedStateHandle: SavedStateHandle, private val ite
         ).build()
     }
 
+    fun dbinsert() =viewModelScope.launch {
+
+    }
+
     fun dbInsert(db: TmdbDataBase, id: String, poster_path: String?, title: String, first: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val list = itemDao.getAll().map { it.movieid }

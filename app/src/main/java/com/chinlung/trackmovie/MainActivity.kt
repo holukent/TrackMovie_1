@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val viewModel: ViewModels by viewModels{
         ViewModelFactory(
-//            (application as MyApplication).container.db.movieDao(),
-            TmdbDataBase.getDatabase(applicationContext).movieDao(),
+            (application as MyApplication).container.db.movieDao(),
+//            TmdbDataBase.getDatabase(applicationContext).movieDao(),
         this, null)
     }
     private lateinit var binding: ActivityMainBinding
@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.mViewModel = viewModel
 
         lifecycleScope.launch {
             viewModel.dbGetAll(viewModel.openDb(this@MainActivity))

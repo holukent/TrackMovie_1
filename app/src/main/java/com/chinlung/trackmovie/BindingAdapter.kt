@@ -10,9 +10,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 @BindingAdapter("imageUrl")
-fun setBindingImage(imageView: ImageView,url:String? ) {
-
-    Glide.with(imageView.context)
+fun ImageView.setBindingImage(url:String? ) {
+    Glide.with(this.context)
         .load(url ?: "")
-        .into(imageView)
+        .into(this)
 }
