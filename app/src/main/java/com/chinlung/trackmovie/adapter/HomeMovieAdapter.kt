@@ -48,7 +48,13 @@ class HomeMovieAdapter(
 
 //
         holder.itemView.setOnClickListener {
-            onitemclick(position)
+            submitList(emptyList())
+//            val test = currentList.toMutableList()
+//            test[position] = getItem(position).also {
+//                it.expand = View.GONE }
+//            submitList(test)
+//            notifyItemChanged(position)
+//            onitemclick(position)
 
 //            viewModel.parseId("${results[position].id}","movie")
 

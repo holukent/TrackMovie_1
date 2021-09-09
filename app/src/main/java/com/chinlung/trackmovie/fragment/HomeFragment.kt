@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
             }
         }
 //        Log.d("sadgsdg","${list?.get(position)?.expand}")
-        adapter.onCurrentListChanged(viewModel.movieList.value!!,list!!)
+        adapter.submitList(list)
         adapter.notifyItemChanged(position)
 
     }
