@@ -1,6 +1,5 @@
 package com.chinlung.trackmovie.adapter
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.chinlung.trackmovie.viewmodel.ViewModels
 
 class HomeMovieAdapter(
     val viewModel: ViewModels,
-    val onitemclick: (Int) -> Unit,
+    val onitemclick: (Int,List<Result>,v: View) -> Unit,
 //    val results: List<Result>,
 
 //) : RecyclerView.Adapter<HomeMovieAdapter.ItemHolderView>() {
@@ -36,7 +35,7 @@ class HomeMovieAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemHolderView, position: Int) {
-//        holder.bind(results[position])
+        holder.bind(getItem(position))
         val item = getItem(position)
         holder.binding.textt.visibility = item.expand
 
@@ -48,7 +47,15 @@ class HomeMovieAdapter(
 
 //
         holder.itemView.setOnClickListener {
-            submitList(emptyList())
+//            if (currentList[position].expand == View.GONE) {
+//                currentList[position].expand = View.VISIBLE
+//            }else{
+//                currentList[position].expand = View.GONE
+//            }
+//            notifyItemChanged(position)
+//            submitList(currentList)
+//            notifyItemChanged(position)
+            onitemclick(position,this.currentList,it)
 //            val test = currentList.toMutableList()
 //            test[position] = getItem(position).also {
 //                it.expand = View.GONE }
@@ -73,12 +80,17 @@ class HomeMovieAdapter(
 
     object DiffUtilCallback: DiffUtil.ItemCallback<Result>() {
         override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-
-            return oldItem.expand == newItem.expand
+            return oldItem.id == newItem.id
+//            return false
         }
 
         override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+            Log.d("areContentsTheSame","${oldItem.expand} : ${newItem.expand}")
             return oldItem == newItem
+        }
+
+        override fun getChangePayload(oldItem: Result, newItem: Result): Any? {
+            return super.getChangePayload(oldItem, newItem)
         }
 
     }

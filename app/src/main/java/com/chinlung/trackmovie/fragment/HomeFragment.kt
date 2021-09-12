@@ -5,18 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.HomeMovieAdapter
 import com.chinlung.trackmovie.adapter.HomeTvAdapter
 import com.chinlung.trackmovie.databinding.FragmentHomeBinding
+import com.chinlung.trackmovie.model.Result
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import kotlinx.coroutines.flow.collect
@@ -26,12 +25,6 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private val viewModel: ViewModels by activityViewModels()
-//    {
-//        ViewModelFactory(
-//            (activity?.application as MyApplication).container.db.movieDao(),
-//            this,
-//            null)
-//    }
     private lateinit var binding: FragmentHomeBinding
     lateinit var adapter:HomeMovieAdapter
 
@@ -118,25 +111,33 @@ class HomeFragment : Fragment() {
         )
     }
 
+    var newlist = mutableListOf<Result>()
 
-    val onitemclick:(Int)->Unit = {position ->
-        val list = viewModel.movieList.value?.toMutableList()
-        if (list?.get(position)?.expand == View.GONE) {
-            val new = list[position].also { it.expand = View.VISIBLE }
-            list[position] = new
-        }else {
-            val new = list?.get(position).also {
-                if (it != null) {
-                    it.expand = View.GONE
-                }
-            }
-            if (new != null) {
-                list?.set(position, new)
-            }
-        }
-//        Log.d("sadgsdg","${list?.get(position)?.expand}")
-        adapter.submitList(list)
-        adapter.notifyItemChanged(position)
+    private val onitemclick:(Int,List<Result>,v:View)->Unit = { position, currenlist,v ->
+
+        val state = binding.homeRecyclerMovie.layoutManager?.onSaveInstanceState()
+
+        viewModel.expand(currenlist,position)
+        binding.homeRecyclerMovie.layoutManager?.onRestoreInstanceState(state)
+
+        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
+
+
+//        if (adapter.currentList[position].expand == View.GONE) {
+//            adapter.currentList[position].expand = View.VISIBLE
+//        }else{
+//            adapter.currentList[position].expand = View.GONE
+//        }
+//        adapter.notifyItemChanged(position)
+//        binding.homeRecyclerMovie.setHasFixedSize(true)
+//        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
+
+
+
+
+
+
+
 
     }
 }

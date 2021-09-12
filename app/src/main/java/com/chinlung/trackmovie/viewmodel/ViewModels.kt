@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.*
 import androidx.room.Room
@@ -17,8 +18,9 @@ import com.chinlung.trackmovie.room.roomdatabase.TmdbDataBase
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.cache
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import okhttp3.*
@@ -49,6 +51,13 @@ class ViewModels(private val savedStateHandle: SavedStateHandle, private val ite
 
     private var _movieList: MutableLiveData<List<Result>> = MutableLiveData()
     val movieList: LiveData<List<Result>> get() = _movieList
+    val movieListflow = flow {
+        while (true) {
+            delay(1000L)
+            val list = movieList.value
+            emit(list)
+        }
+    }
 
     private var _editInput: MutableLiveData<String> = MutableLiveData()
     val editInput: LiveData<String> get() = _editInput
@@ -82,6 +91,20 @@ class ViewModels(private val savedStateHandle: SavedStateHandle, private val ite
 
     init {
         _tabLayoutItem.value = Pair("movie", 0)
+
+    }
+
+
+    fun edit(editSearch:String): Flow<String> {
+        return flow {
+            while (true) {
+                delay(5000L)
+                emit(editSearch)
+            }
+        }
+    }
+
+    fun setmovielist() {
 
     }
 
@@ -176,6 +199,10 @@ class ViewModels(private val savedStateHandle: SavedStateHandle, private val ite
 
     }
 
+    fun onclick(position: Int) {
+
+    }
+
 
     fun parseId(id: String, str: String = tabLayoutItem.value!!.first) {
 
@@ -259,6 +286,15 @@ class ViewModels(private val savedStateHandle: SavedStateHandle, private val ite
             itemDao.deleteByMovieId(movieid)
             dbGetAll(db)
         }
+    }
+
+    fun expand(currenlist: List<Result>, position: Int) {
+        if (currenlist[position].expand == View.GONE) {
+            currenlist[position].expand = View.VISIBLE
+            }else{
+            currenlist[position].expand = View.GONE
+            }
+        _movieList.value = currenlist
     }
 }
 
