@@ -27,7 +27,7 @@ import okhttp3.*
 import java.io.*
 
 
-class ViewModels(private val savedStateHandle: SavedStateHandle, private val itemDao: MovieDao) :
+class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: MovieDao) :
     ViewModel() {
 
     companion object {

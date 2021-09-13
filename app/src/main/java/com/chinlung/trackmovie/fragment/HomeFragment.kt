@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentHomeBinding
-    lateinit var adapter:HomeMovieAdapter
+    val adapter:HomeMovieAdapter by lazy { HomeMovieAdapter(viewModel,onitemclick) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +42,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        adapter = HomeMovieAdapter(viewModel,onitemclick)
         binding.homeRecyclerMovie.adapter = adapter
+        binding.homeRecyclerMovie.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+
         return binding.root
     }
 
@@ -67,18 +70,18 @@ class HomeFragment : Fragment() {
                 )
             }
         }
+
         viewModel.movieList.observe(viewLifecycleOwner) {
 //            setRecycler(binding.homeRecyclerMovie, HomeMovieAdapter(viewModel, it,onitemclick))
 
             adapter.submitList(it)
-            binding.homeRecyclerMovie.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
             binding.homeRecyclerMovie.setHasFixedSize(true)
-            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
-                binding.homeRecyclerMovie.layoutManager!!.onRestoreInstanceState(
-                    viewModel.getState(MainActivity.MOVIE_STATE)
-                )
-            }
+//            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
+//                binding.homeRecyclerMovie.layoutManager!!.onRestoreInstanceState(
+//                    viewModel.getState(MainActivity.MOVIE_STATE)
+//                )
+//            }
         }
 
 
@@ -115,29 +118,23 @@ class HomeFragment : Fragment() {
 
     private val onitemclick:(Int,List<Result>,v:View)->Unit = { position, currenlist,v ->
 
+
         val state = binding.homeRecyclerMovie.layoutManager?.onSaveInstanceState()
 
-        viewModel.expand(currenlist,position)
+        if (adapter.currentList[position].expand == View.GONE) {
+            adapter.currentList[position].expand = View.VISIBLE
+        }else{
+            adapter.currentList[position].expand = View.GONE
+        }
         binding.homeRecyclerMovie.layoutManager?.onRestoreInstanceState(state)
 
-        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
+        binding.homeRecyclerMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
 
+//        adapter.submitList(currenlist)
 
-//        if (adapter.currentList[position].expand == View.GONE) {
-//            adapter.currentList[position].expand = View.VISIBLE
-//        }else{
-//            adapter.currentList[position].expand = View.GONE
-//        }
 //        adapter.notifyItemChanged(position)
 //        binding.homeRecyclerMovie.setHasFixedSize(true)
 //        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
-
-
-
-
-
-
-
-
+//        binding.homeRecyclerMovie.setHasFixedSize(true)
     }
 }
