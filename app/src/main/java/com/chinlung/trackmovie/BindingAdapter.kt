@@ -6,10 +6,12 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.room.entity.Movie
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @BindingAdapter("imageUrl")
-fun setBindingImage(imageView: ImageView,url:String? ) {
-    Glide.with(imageView.context)
+fun ImageView.setBindingImage(url:String? ) {
+    Glide.with(this.context)
         .load(url ?: "")
-        .into(imageView)
+        .into(this)
 }

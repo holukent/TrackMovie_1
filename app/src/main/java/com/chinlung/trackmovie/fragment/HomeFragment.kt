@@ -8,20 +8,25 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.HomeMovieAdapter
 import com.chinlung.trackmovie.adapter.HomeTvAdapter
 import com.chinlung.trackmovie.databinding.FragmentHomeBinding
+import com.chinlung.trackmovie.model.Result
 import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
 
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentHomeBinding
+    val adapter:HomeMovieAdapter by lazy { HomeMovieAdapter(viewModel,onitemclick) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +42,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.homeRecyclerMovie.adapter = adapter
+        binding.homeRecyclerMovie.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("savedInstanceState","$savedInstanceState")
+
 
         if (viewModel.getState(MainActivity.MOVIE_STATE) == null)
             viewModel.requestTmdbApi(TmdbApi.TMDB_MOVIE_HOT)
@@ -57,16 +69,28 @@ class HomeFragment : Fragment() {
                     viewModel.getState(MainActivity.TV_STATE)
                 )
             }
-
         }
+
         viewModel.movieList.observe(viewLifecycleOwner) {
-            setRecycler(binding.homeRecyclerMovie, HomeMovieAdapter(viewModel, it))
-            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
-                binding.homeRecyclerMovie.layoutManager!!.onRestoreInstanceState(
-                    viewModel.getState(MainActivity.MOVIE_STATE)
-                )
+//            setRecycler(binding.homeRecyclerMovie, HomeMovieAdapter(viewModel, it,onitemclick))
+
+            adapter.submitList(it)
+
+            binding.homeRecyclerMovie.setHasFixedSize(true)
+//            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
+//                binding.homeRecyclerMovie.layoutManager!!.onRestoreInstanceState(
+//                    viewModel.getState(MainActivity.MOVIE_STATE)
+//                )
+//            }
+        }
+
+
+        lifecycleScope.launch {
+            viewModel.data().collect {
+                Log.d("viewModel.data()","$it")
             }
         }
+
     }
 
     private fun <T> setRecycler(recyclerMovie: RecyclerView, adapter: T) {
@@ -88,5 +112,29 @@ class HomeFragment : Fragment() {
             MainActivity.TV_STATE,
             binding.homeRecyclerTv.layoutManager?.onSaveInstanceState()!!
         )
+    }
+
+    var newlist = mutableListOf<Result>()
+
+    private val onitemclick:(Int,List<Result>,v:View)->Unit = { position, currenlist,v ->
+
+
+        val state = binding.homeRecyclerMovie.layoutManager?.onSaveInstanceState()
+
+        if (adapter.currentList[position].expand == View.GONE) {
+            adapter.currentList[position].expand = View.VISIBLE
+        }else{
+            adapter.currentList[position].expand = View.GONE
+        }
+        binding.homeRecyclerMovie.layoutManager?.onRestoreInstanceState(state)
+
+        binding.homeRecyclerMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
+
+//        adapter.submitList(currenlist)
+
+//        adapter.notifyItemChanged(position)
+//        binding.homeRecyclerMovie.setHasFixedSize(true)
+//        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
+//        binding.homeRecyclerMovie.setHasFixedSize(true)
     }
 }

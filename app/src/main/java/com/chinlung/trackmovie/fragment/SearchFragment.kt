@@ -3,6 +3,8 @@ package com.chinlung.trackmovie.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputType.*
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +14,24 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.MainActivity
 import com.chinlung.trackmovie.adapter.SearchAdapter
 import com.chinlung.trackmovie.databinding.FragmentSearchBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.DiffUtil
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
 
 class SearchFragment : Fragment() {
 
@@ -37,10 +51,26 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding.editSearch.apply {
+            addTextChangedListener {
+//                inputType = if (it?.length!! >= 1)TYPE_CLASS_NUMBER else TYPE_TEXT_FLAG_CAP_CHARACTERS
+                inputType = if (it?.length!! < 1) 0x00001001 else TYPE_CLASS_NUMBER
+            }
+            filters = arrayOf(InputFilter.AllCaps())
+
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+//        lifecycleScope.launch{
+//            viewModel.edit(binding.editSearch.text.toString()).collect{
+//                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+//            }
+//        }
+
 
 
         binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
@@ -63,7 +93,8 @@ class SearchFragment : Fragment() {
         }
 
         binding.editSearch.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            Log.d("editSearch","${actionId} : $event")
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.editInput(v.text)
                 binding.editSearch.text?.clear()
                 requireContext().hideKeyBoard(v)
@@ -77,7 +108,9 @@ class SearchFragment : Fragment() {
                 viewModel.getTabLayoutItem(tab)
                 if (viewModel.editInput.value != "" && viewModel.editInput.value != null)
                     viewModel.requestSeachApi(viewModel.editSearchApi(viewModel.editInput.value!!))
-                viewModel.dbGetAll(viewModel.openDb(requireContext()))
+                lifecycleScope.launch {
+                    viewModel.dbGetAll(viewModel.openDb(requireContext()))
+                }
 
 
             }
@@ -89,6 +122,12 @@ class SearchFragment : Fragment() {
             }
 
         })
+
+        lifecycleScope.launch {
+            viewModel.data().collect {
+                Log.d("viewModel.data()","$it")
+            }
+        }
     }
 
 
@@ -110,5 +149,9 @@ class SearchFragment : Fragment() {
             binding.recyclerSearchMovie.layoutManager?.onSaveInstanceState()!!
         )
         super.onPause()
+    }
+
+    fun getedit():String {
+        return binding.editSearch.text.toString()
     }
 }

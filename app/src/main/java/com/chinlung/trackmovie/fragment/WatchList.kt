@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chinlung.trackmovie.adapter.WatchListAdapter
 import com.chinlung.trackmovie.databinding.FragmentWatchListBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
+import kotlinx.coroutines.launch
 
 class WatchList : Fragment() {
     val viewModel: ViewModels by activityViewModels()
@@ -32,11 +34,14 @@ class WatchList : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.dbGetAll(viewModel.openDb(requireContext()))
+        lifecycleScope.launch {
+            viewModel.dbGetAll(viewModel.openDb(requireContext()))
+
+        }
 
         viewModel.dblist.observe(viewLifecycleOwner) {
             binding.recyclerViewWatchlist.adapter = WatchListAdapter(viewModel, it)
-            binding.recyclerViewWatchlist.layoutManager = GridLayoutManager(context, 4)
+            binding.recyclerViewWatchlist.layoutManager = GridLayoutManager(context, 5)
             binding.recyclerViewWatchlist.setHasFixedSize(true)
         }
 

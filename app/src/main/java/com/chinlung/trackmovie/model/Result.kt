@@ -1,5 +1,6 @@
 package com.chinlung.trackmovie.model
 
+import android.view.View
 import com.google.gson.annotations.SerializedName
 
 data class Result(
@@ -21,4 +22,5 @@ data class Result(
     val title: String,
     @SerializedName("first_air_date", alternate = ["release_date"])
     val release_date: String,
+    var expand:Int = View.GONE
 )
