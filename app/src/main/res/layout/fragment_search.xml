@@ -32,7 +32,7 @@
                 android:id="@+id/edit_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNone"
+                android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>

@@ -53,8 +53,8 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.editSearch.apply {
             addTextChangedListener {
-//                inputType = if (it?.length!! >= 1)TYPE_CLASS_NUMBER else TYPE_TEXT_FLAG_CAP_CHARACTERS
-                inputType = if (it?.length!! < 1) 0x00001001 else TYPE_CLASS_NUMBER
+////                inputType = if (it?.length!! >= 1)TYPE_CLASS_NUMBER else TYPE_TEXT_FLAG_CAP_CHARACTERS
+//                inputType = if (it?.length!! < 1) 0x00001001 else TYPE_CLASS_NUMBER
             }
             filters = arrayOf(InputFilter.AllCaps())
 

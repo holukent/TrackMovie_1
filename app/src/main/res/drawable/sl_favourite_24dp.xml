@@ -3,6 +3,8 @@
     <item
         android:drawable="@drawable/ic_baseline_favorite_border_24"
         android:state_checked="false"
+        android:state_focused="true"
+        android:state_selected="true"
         />
     <item
         android:drawable="@drawable/ic_baseline_favorite_24"

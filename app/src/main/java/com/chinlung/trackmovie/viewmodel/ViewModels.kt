@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import okhttp3.*
@@ -88,6 +89,8 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
 
     private var _dblist = MutableLiveData<List<Movie>>()
     val dblist: LiveData<List<Movie>> get() = _dblist
+
+    val test = flow<Int> {  }
 
     init {
         _tabLayoutItem.value = Pair("movie", 0)

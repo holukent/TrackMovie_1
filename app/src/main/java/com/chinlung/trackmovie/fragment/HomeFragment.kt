@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,6 +21,7 @@ import com.chinlung.trackmovie.repository.TmdbApi
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlin.math.exp
 
 
 class HomeFragment : Fragment() {
@@ -118,23 +120,49 @@ class HomeFragment : Fragment() {
 
     private val onitemclick:(Int,List<Result>,v:View)->Unit = { position, currenlist,v ->
 
+        binding.homeRecyclerMovie.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
 
-        val state = binding.homeRecyclerMovie.layoutManager?.onSaveInstanceState()
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+
+//
+//        if (adapter.currentList[position].expand == View.GONE) {
+//            adapter.currentList[position].expand = View.VISIBLE
+//        }else{
+//            adapter.currentList[position].expand = View.GONE
+//        }
+//
+//        val state = binding.homeRecyclerMovie.layoutManager?.onSaveInstanceState()
+//        binding.homeRecyclerMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
+//
+//        binding.homeRecyclerMovie.layoutManager?.onRestoreInstanceState(state)
 
         if (adapter.currentList[position].expand == View.GONE) {
-            adapter.currentList[position].expand = View.VISIBLE
+            val new = adapter.currentList[position].copy(expand = View.VISIBLE)
+            val list = arrayListOf<Result>()
+            list.addAll(adapter.currentList)
+            list[position] = new
+            adapter.submitList(list)
         }else{
-            adapter.currentList[position].expand = View.GONE
+            val new = adapter.currentList[position].copy(expand = View.GONE)
+            val list = arrayListOf<Result>()
+            list.addAll(adapter.currentList)
+            list[position] = new
+            adapter.submitList(list)
         }
-        binding.homeRecyclerMovie.layoutManager?.onRestoreInstanceState(state)
 
-        binding.homeRecyclerMovie.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
 
-//        adapter.submitList(currenlist)
+//        viewModel.expand(currenlist, position)
+
 
 //        adapter.notifyItemChanged(position)
 //        binding.homeRecyclerMovie.setHasFixedSize(true)
 //        binding.homeRecyclerMovie.layoutManager?.scrollToPosition(position)
-//        binding.homeRecyclerMovie.setHasFixedSize(true)
     }
+
 }

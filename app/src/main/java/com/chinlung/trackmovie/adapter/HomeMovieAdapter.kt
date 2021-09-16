@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.trackmovie.databinding.ListHomeMovieBinding
@@ -47,24 +48,7 @@ class HomeMovieAdapter(
 
 //
         holder.itemView.setOnClickListener {
-//            if (currentList[position].expand == View.GONE) {
-//                currentList[position].expand = View.VISIBLE
-//            }else{
-//                currentList[position].expand = View.GONE
-//            }
-//            notifyItemChanged(position)
-//            submitList(currentList)
-//            notifyItemChanged(position)
             onitemclick(position,this.currentList,it)
-//            val test = currentList.toMutableList()
-//            test[position] = getItem(position).also {
-//                it.expand = View.GONE }
-//            submitList(test)
-//            notifyItemChanged(position)
-//            onitemclick(position)
-
-//            viewModel.parseId("${results[position].id}","movie")
-
 
 //            val action = HomeFragmentDirections.actionHomeFragmentToInfoFragment(
 ////                title = results[position].title
@@ -80,13 +64,13 @@ class HomeMovieAdapter(
 
     object DiffUtilCallback: DiffUtil.ItemCallback<Result>() {
         override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
-            return oldItem.id == newItem.id
-//            return false
+//            return oldItem.id == newItem.id
+            return true
         }
 
         override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
-            Log.d("areContentsTheSame","${oldItem.expand} : ${newItem.expand}")
-            return oldItem == newItem
+            Log.d("areContentsTheSame","${oldItem.expand} : ${newItem.expand} : ${newItem.expand}")
+            return oldItem.expand == newItem.expand
         }
 
         override fun getChangePayload(oldItem: Result, newItem: Result): Any? {
@@ -109,4 +93,17 @@ class HomeMovieAdapter(
 //            holder.binding.imgHomePoster.setImageURI(null)
 //        }
 //    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+    }
+    fun RecyclerView.smoothSnapToPosition(position: Int, snapMode: Int = LinearSmoothScroller.SNAP_TO_START) {
+        val smoothScroller = object : LinearSmoothScroller(this.context) {
+            override fun getVerticalSnapPreference(): Int = snapMode
+            override fun getHorizontalSnapPreference(): Int = snapMode
+        }
+        smoothScroller.targetPosition = position
+        layoutManager?.startSmoothScroll(smoothScroller)
+    }
 }
