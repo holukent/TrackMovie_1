@@ -21,16 +21,12 @@ import com.chinlung.trackmovie.adapter.SearchAdapter
 import com.chinlung.trackmovie.databinding.FragmentSearchBinding
 import com.chinlung.trackmovie.viewmodel.ViewModels
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.DiffUtil
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.collectLatest
 
 
 class SearchFragment : Fragment() {
@@ -71,6 +67,13 @@ class SearchFragment : Fragment() {
 //            }
 //        }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.intFlow.collectLatest {
+                    Log.d("intFlow", "onViewCreated: $it")
+                }
+            }
+        }
 
 
         binding.tabLayout.getTabAt(viewModel.tabLayoutItem.value!!.second)!!.select()
@@ -109,7 +112,7 @@ class SearchFragment : Fragment() {
                 if (viewModel.editInput.value != "" && viewModel.editInput.value != null)
                     viewModel.requestSeachApi(viewModel.editSearchApi(viewModel.editInput.value!!))
                 lifecycleScope.launch {
-                    viewModel.dbGetAll(viewModel.openDb(requireContext()))
+//                    viewModel.dbGetAll(viewModel.openDb(requireContext()))
                 }
 
 
@@ -123,11 +126,11 @@ class SearchFragment : Fragment() {
 
         })
 
-        lifecycleScope.launch {
-            viewModel.data().collect {
-                Log.d("viewModel.data()","$it")
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.data().collect {
+//                Log.d("viewModel.data()","$it")
+//            }
+//        }
     }
 
 

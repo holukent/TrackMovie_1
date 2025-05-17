@@ -1,4 +1,4 @@
-package com.chinlung.trackmovie.room.dao
+package com.chinlung.trackmovie.room.entity.dao
 
 import androidx.room.*
 import com.chinlung.trackmovie.room.entity.Movie

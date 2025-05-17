@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.chinlung.trackmovie.MainActivity
-import com.chinlung.trackmovie.room.dao.MovieDao
-import com.chinlung.trackmovie.room.dao.TvDao
+import com.chinlung.trackmovie.room.entity.dao.MovieDao
+import com.chinlung.trackmovie.room.entity.dao.TvDao
 import com.chinlung.trackmovie.room.entity.Movie
 import com.chinlung.trackmovie.room.entity.Tv
 

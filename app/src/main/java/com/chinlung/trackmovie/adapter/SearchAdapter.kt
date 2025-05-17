@@ -57,7 +57,7 @@ class SearchAdapter(
             Log.d("checkcheck", "$isChecked")
             if (isChecked) {
                 viewModel.dbInsert(
-                    viewModel.openDb(context),
+//                    viewModel.openDb(context),
                     results[position].id.toString(),
                     results[position].poster_path,
                     results[position].title,
@@ -66,7 +66,7 @@ class SearchAdapter(
                 Toast.makeText(context,"已加入",Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.deleteByMovieId(
-                    viewModel.openDb(context),
+//                    viewModel.openDb(context),
                     results[position].id.toString()
                 )
                 Toast.makeText(context,"已刪除",Toast.LENGTH_SHORT).show()

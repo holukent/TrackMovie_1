@@ -1,18 +1,16 @@
 package com.chinlung.trackmovie.viewmodel
 
 import android.content.Context
-import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.*
 import androidx.room.Room
-import androidx.savedstate.SavedStateRegistryOwner
 import com.bumptech.glide.Glide
 import com.chinlung.trackmovie.model.*
 import com.chinlung.trackmovie.repository.TmdbApi
-import com.chinlung.trackmovie.room.dao.MovieDao
+import com.chinlung.trackmovie.room.entity.dao.MovieDao
 import com.chinlung.trackmovie.room.entity.Movie
 import com.chinlung.trackmovie.room.roomdatabase.TmdbDataBase
 import com.google.android.material.tabs.TabLayout
@@ -22,12 +20,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.*
 
 
-class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: MovieDao) :
+class ViewModels(
+    private val itemDao: MovieDao,
+    val handle: SavedStateHandle,
+) :
     ViewModel() {
 
     companion object {
@@ -37,8 +39,6 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
     fun data() = itemDao.getAll1().transform{
         it.onEachIndexed { index, _ -> emit(index) }
     }
-
-    val data:()->Flow<List<Movie>> = { itemDao.getAll1()  }
 
     private var _position: MutableLiveData<Int> = MutableLiveData()
     val position: LiveData<Int> = _position
@@ -89,9 +89,17 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
     private var _dblist = MutableLiveData<List<Movie>>()
     val dblist: LiveData<List<Movie>> get() = _dblist
 
+    val intFlow = handle.getLiveData<Int>("123123").asFlow()
+
     init {
         _tabLayoutItem.value = Pair("movie", 0)
-
+        handle["123123"] = 1
+        viewModelScope.launch {
+            while (this.isActive){
+                delay(1000)
+                handle["123123"] = handle.get<Int>("123123")?.plus(1)
+            }
+        }
     }
 
 
@@ -190,12 +198,12 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
     }
 
     fun getState(fragment: String): Parcelable? {
-        return savedStateHandle[fragment]
+        return handle[fragment]
     }
 
     fun saveState(fragment: String, state: Parcelable) {
 //        savedStateHandle.set(fragment,state)
-        savedStateHandle[fragment] = state
+        handle[fragment] = state
 
     }
 
@@ -248,7 +256,13 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
 
     }
 
-    fun dbInsert(db: TmdbDataBase, id: String, poster_path: String?, title: String, first: String) {
+    fun dbInsert(
+//        db: TmdbDataBase,
+        id: String,
+        poster_path: String?,
+        title: String,
+        first: String
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val list = itemDao.getAll().map { it.movieid }
             if (!list.contains(id))
@@ -261,30 +275,38 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
                         movieortv = first
                     )
                 )
-            dbGetAll(db)
-            db.close()
+            dbGetAll()
+//            db.close()
         }
     }
 
-    fun dbGetAll(db: TmdbDataBase) {
+    fun dbGetAll(
+//        db: TmdbDataBase
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             _dblist.postValue(itemDao.getAll())
-            db.close()
+//            db.close()
         }
     }
 
-    fun deleteByid(db: TmdbDataBase, id: Int) {
+    fun deleteByid(
+//        db: TmdbDataBase,
+        id: Int
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             itemDao.deleteByid(id)
-            dbGetAll(db)
+            dbGetAll()
         }
     }
 
 
-    fun deleteByMovieId(db: TmdbDataBase, movieid: String) {
+    fun deleteByMovieId(
+//        db: TmdbDataBase,
+        movieid: String
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             itemDao.deleteByMovieId(movieid)
-            dbGetAll(db)
+            dbGetAll()
         }
     }
 
@@ -307,22 +329,24 @@ class ViewModels(val savedStateHandle: SavedStateHandle, private val itemDao: Mo
 //        throw IllegalArgumentException("Unknown ViewModel class")
 //    }
 //}
-class ViewModelFactory(
-    private val itemDao: MovieDao,
-    owner: SavedStateRegistryOwner,
-    defaultArgs: Bundle?
-) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-    override fun <T : ViewModel?> create(
-        key: String,
-        modelClass: Class<T>,
-        handle: SavedStateHandle
-    ): T {
-        if (modelClass.isAssignableFrom(ViewModels::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ViewModels(handle, itemDao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class ViewModelFactory(
+//    private val itemDao: MovieDao,
+//    owner: SavedStateRegistryOwner,
+//    defaultArgs: Bundle?
+//) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+//    override fun <T : ViewModel?> create(
+//        key: String,
+//        modelClass: Class<T>,
+//        handle: SavedStateHandle
+//    ): T {
+//        if (modelClass.isAssignableFrom(ViewModels::class.java)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return ViewModels( itemDao,handle,) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
+
+
 
 

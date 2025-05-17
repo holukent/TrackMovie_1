@@ -62,19 +62,19 @@ class HomeFragment : Fragment() {
 
 
         viewModel.tvList.observe(viewLifecycleOwner) {
-            Log.d("tvlist", "$it")
-            setRecycler(binding.homeRecyclerTv, HomeTvAdapter(viewModel, it))
-            if (viewModel.getState(MainActivity.TV_STATE) != null) {
-                binding.homeRecyclerTv.layoutManager!!.onRestoreInstanceState(
-                    viewModel.getState(MainActivity.TV_STATE)
-                )
-            }
+//            Log.d("tvlist", "$it")
+//            setRecycler(binding.homeRecyclerTv, HomeTvAdapter(viewModel, it))
+//            if (viewModel.getState(MainActivity.TV_STATE) != null) {
+//                binding.homeRecyclerTv.layoutManager!!.onRestoreInstanceState(
+//                    viewModel.getState(MainActivity.TV_STATE)
+//                )
+//            }
         }
 
         viewModel.movieList.observe(viewLifecycleOwner) {
 //            setRecycler(binding.homeRecyclerMovie, HomeMovieAdapter(viewModel, it,onitemclick))
 
-            adapter.submitList(it)
+//            adapter.submitList(it)
 
             binding.homeRecyclerMovie.setHasFixedSize(true)
 //            if (viewModel.getState(MainActivity.MOVIE_STATE) != null) {
@@ -85,11 +85,11 @@ class HomeFragment : Fragment() {
         }
 
 
-        lifecycleScope.launch {
-            viewModel.data().collect {
-                Log.d("viewModel.data()","$it")
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.data().collect {
+//                Log.d("viewModel.data()","$it")
+//            }
+//        }
 
     }
 

@@ -52,8 +52,8 @@ class WatchListAdapter(
                 .setTitle("注意")
                 .setMessage("確定刪除?")
                 .setPositiveButton("刪除") { _: DialogInterface, _: Int ->
-                    val db = viewModel.openDb(holder.itemView.context)
-                    viewModel.deleteByid(db,results[position].id)
+//                    val db = viewModel.openDb(holder.itemView.context)
+//                    viewModel.deleteByid(db,results[position].id)
                 }
                 .setNegativeButton("取消") { _: DialogInterface, _: Int -> }
                 .show()

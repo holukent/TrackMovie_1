@@ -35,7 +35,7 @@ class WatchList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
-            viewModel.dbGetAll(viewModel.openDb(requireContext()))
+//            viewModel.dbGetAll(viewModel.openDb(requireContext()))
 
         }
 
