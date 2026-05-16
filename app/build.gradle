@@ -10,13 +10,13 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         applicationId "com.chinlung.trackmovie"
         minSdkVersion 30
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        targetSdk 36
+        versionCode 5
+        versionName "5.0"
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
